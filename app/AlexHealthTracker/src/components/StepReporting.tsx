@@ -6,6 +6,7 @@ import {
   BarChart, Cell,
 } from 'recharts'
 import styles from './StepReporting.module.css'
+import { useAppStrings } from '../hooks/useAppStrings'
 
 interface MonthlyActivityStats {
   month: string
@@ -221,6 +222,7 @@ const autoBounds = (points: ChartPoint[]) => {
 // ── Main component ───────────────────────────────────────
 const StepReporting = () => {
   // Latest steps reference line
+  const { s } = useAppStrings()
   const [latestSteps, setLatestSteps] = useState<number | undefined>()
   useEffect(() => {
     fetch(LATEST_URL)
@@ -304,7 +306,7 @@ const StepReporting = () => {
 
   return (
     <div className={styles.page}>
-      <h2 className={styles.pageTitle}>🏃 Step Reporting</h2>
+      <h2 className={styles.pageTitle}>{s('StepReporting', 'page_title', '🏃 Step Reporting')}</h2>
 
       {/* ── Yearly totals ── */}
       <section aria-labelledby="step-totals-heading">

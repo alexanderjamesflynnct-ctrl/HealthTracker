@@ -39,6 +39,22 @@ public class HealthDatabase
             """;
         await using (var cmd = new SqliteCommand(createSql, connection))
             await cmd.ExecuteNonQueryAsync();
+
+        const string auditSql = """
+            CREATE TABLE IF NOT EXISTS app_strings_audit (
+                id          INTEGER PRIMARY KEY AUTOINCREMENT,
+                application TEXT NOT NULL,
+                page        TEXT NOT NULL,
+                unique_id   TEXT NOT NULL,
+                language    TEXT NOT NULL,
+                old_value   TEXT NOT NULL DEFAULT '',
+                new_value   TEXT NOT NULL DEFAULT '',
+                changed_by_ip TEXT NOT NULL DEFAULT '',
+                changed_at  TEXT NOT NULL DEFAULT (datetime('now'))
+            )
+            """;
+        await using (var cmd = new SqliteCommand(auditSql, connection))
+            await cmd.ExecuteNonQueryAsync();
     }
 
     public async Task<IReadOnlyList<AppString>> GetAllStringsAsync(string language = "en")
@@ -95,22 +111,84 @@ public class HealthDatabase
         };
     }
 
-    public async Task UpsertStringAsync(string page, string uniqueId, string value, string language = "en")
+    public async Task<IReadOnlyList<StringAuditEntry>> GetStringAuditLogAsync()
     {
+        const string sql = """
+            SELECT id, page, unique_id, language, old_value, new_value, changed_by_ip, changed_at
+            FROM app_strings_audit
+            ORDER BY changed_at DESC
+            """;
+        var results = new List<StringAuditEntry>();
+        await using var connection = new SqliteConnection(_connectionString);
+        await connection.OpenAsync();
+        await using var cmd = new SqliteCommand(sql, connection);
+        await using var rdr = await cmd.ExecuteReaderAsync();
+        while (await rdr.ReadAsync())
+        {
+            results.Add(new StringAuditEntry
+            {
+                Id          = rdr.GetInt32(0),
+                Page        = rdr.GetString(1),
+                UniqueId    = rdr.GetString(2),
+                Language    = rdr.GetString(3),
+                OldValue    = rdr.GetString(4),
+                NewValue    = rdr.GetString(5),
+                ChangedByIp = rdr.GetString(6),
+                ChangedAt   = rdr.GetString(7),
+            });
+        }
+        return results;
+    }
+
+    public async Task UpsertStringAsync(string page, string uniqueId, string value, string language = "en", string ipAddress = "")
+    {
+        await using var connection = new SqliteConnection(_connectionString);
+        await connection.OpenAsync();
+
+        // Get old value for audit
+        string oldValue = "";
+        const string selectSql = "SELECT value FROM app_strings WHERE application = 'HealthTracker' AND page = @page AND unique_id = @uid AND language = @lang";
+        await using (var selCmd = new SqliteCommand(selectSql, connection))
+        {
+            selCmd.Parameters.AddWithValue("@page", page);
+            selCmd.Parameters.AddWithValue("@uid",  uniqueId);
+            selCmd.Parameters.AddWithValue("@lang", language);
+            var result = await selCmd.ExecuteScalarAsync();
+            if (result is string s) oldValue = s;
+        }
+
+        // Upsert the string
         const string sql = """
             INSERT INTO app_strings (application, page, unique_id, language, value)
             VALUES ('HealthTracker', @page, @uid, @lang, @value)
             ON CONFLICT(application, page, unique_id, language) DO UPDATE SET
                 value = excluded.value
             """;
-        await using var connection = new SqliteConnection(_connectionString);
-        await connection.OpenAsync();
-        await using var cmd = new SqliteCommand(sql, connection);
-        cmd.Parameters.AddWithValue("@page",  page);
-        cmd.Parameters.AddWithValue("@uid",   uniqueId);
-        cmd.Parameters.AddWithValue("@lang",  language);
-        cmd.Parameters.AddWithValue("@value", value);
-        await cmd.ExecuteNonQueryAsync();
+        await using (var cmd = new SqliteCommand(sql, connection))
+        {
+            cmd.Parameters.AddWithValue("@page",  page);
+            cmd.Parameters.AddWithValue("@uid",   uniqueId);
+            cmd.Parameters.AddWithValue("@lang",  language);
+            cmd.Parameters.AddWithValue("@value", value);
+            await cmd.ExecuteNonQueryAsync();
+        }
+
+        // Log audit entry (only if value actually changed)
+        if (oldValue != value)
+        {
+            const string auditSql = """
+                INSERT INTO app_strings_audit (application, page, unique_id, language, old_value, new_value, changed_by_ip, changed_at)
+                VALUES ('HealthTracker', @page, @uid, @lang, @oldVal, @newVal, @ip, datetime('now'))
+                """;
+            await using var auditCmd = new SqliteCommand(auditSql, connection);
+            auditCmd.Parameters.AddWithValue("@page",   page);
+            auditCmd.Parameters.AddWithValue("@uid",    uniqueId);
+            auditCmd.Parameters.AddWithValue("@lang",   language);
+            auditCmd.Parameters.AddWithValue("@oldVal", oldValue);
+            auditCmd.Parameters.AddWithValue("@newVal", value);
+            auditCmd.Parameters.AddWithValue("@ip",     ipAddress);
+            await auditCmd.ExecuteNonQueryAsync();
+        }
     }
 
     public async Task SeedStringsAsync(IReadOnlyList<AppString> strings)

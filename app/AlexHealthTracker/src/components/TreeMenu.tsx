@@ -1,6 +1,7 @@
 import { useState, useCallback, useId } from 'react'
 import type { TreeNode } from '../types'
 import styles from './TreeMenu.module.css'
+import { useAppStrings } from '../hooks/useAppStrings'
 
 interface TreeMenuItemProps {
   node: TreeNode
@@ -11,6 +12,8 @@ interface TreeMenuItemProps {
 
 const TreeMenuItem = ({ node, depth, selectedNode, onSelectNode }: TreeMenuItemProps) => {
   const [isExpanded, setIsExpanded] = useState(true)
+  const { s } = useAppStrings()
+  const displayLabel = node.stringKey ? s('Sidebar', node.stringKey, node.label) : node.label
   const hasChildren = node.children && node.children.length > 0
   const isLeaf = !hasChildren
   const isSelected = selectedNode === node.id
@@ -85,7 +88,7 @@ const TreeMenuItem = ({ node, depth, selectedNode, onSelectNode }: TreeMenuItemP
             {node.icon}
           </span>
         )}
-        <span className={styles.nodeLabel}>{node.label}</span>
+        <span className={styles.nodeLabel}>{displayLabel}</span>
       </button>
 
       {hasChildren && isExpanded && (

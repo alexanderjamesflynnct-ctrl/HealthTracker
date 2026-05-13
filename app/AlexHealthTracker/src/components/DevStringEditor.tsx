@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import styles from './DevStringEditor.module.css'
-import { reloadStrings } from '../hooks/useAppStrings'
+import { reloadStrings, useAppStrings } from '../hooks/useAppStrings'
 
 interface AppString {
   application: string
@@ -21,6 +21,7 @@ const DevStringEditor = () => {
   const [editValue, setEditValue] = useState('')
   const [saving, setSaving] = useState(false)
   const [saveSuccess, setSaveSuccess] = useState<string | null>(null)
+  const { s } = useAppStrings()
 
   useEffect(() => {
     fetch(API_URL)
@@ -73,7 +74,7 @@ const DevStringEditor = () => {
   return (
     <div className={styles.page}>
       <div className={styles.header}>
-        <h2 className={styles.pageTitle}>🔤 String Editor</h2>
+        <h2 className={styles.pageTitle}>{s('DevStringEditor', 'page_title', '🔤 String Editor')}</h2>
         <span className={styles.count}>{filtered.length} of {strings.length} strings</span>
       </div>
 

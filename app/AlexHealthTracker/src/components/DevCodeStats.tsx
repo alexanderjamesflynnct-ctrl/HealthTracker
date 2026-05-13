@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell, PieChart, Pie } from 'recharts'
 import styles from './DevCodeStats.module.css'
+import { useAppStrings } from '../hooks/useAppStrings'
 
 // Static code stats — update when codebase changes significantly
 interface FileInfo { path: string; lines: number; language: string }
@@ -75,6 +76,7 @@ const COLORS: Record<string, string> = {
 }
 
 const DevCodeStats = () => {
+  const { s } = useAppStrings()
   const byLanguage = useMemo(() => {
     const map = new Map<string, { files: number; lines: number }>()
     for (const f of FILES) {
@@ -94,7 +96,7 @@ const DevCodeStats = () => {
 
   return (
     <div className={styles.page}>
-      <h2 className={styles.pageTitle}>📊 Code Stats</h2>
+      <h2 className={styles.pageTitle}>{s('DevCodeStats', 'page_title', '📊 Code Stats')}</h2>
 
       {/* Summary */}
       <div className={styles.summaryRow}>

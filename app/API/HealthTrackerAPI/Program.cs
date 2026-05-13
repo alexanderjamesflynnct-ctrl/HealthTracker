@@ -186,15 +186,26 @@ app.MapGet("/api/strings", async (HealthDatabase db, string lang = "en") =>
 .WithTags("Strings")
 .WithSummary("Returns all application strings for a language");
 
-// App strings — update one
-app.MapPut("/api/strings/{page}/{uniqueId}", async (HealthDatabase db, string page, string uniqueId, UpsertStringRequest req, string lang = "en") =>
+// App strings — change log
+app.MapGet("/api/strings/audit", async (HealthDatabase db) =>
 {
-    await db.UpsertStringAsync(page, uniqueId, req.Value, lang);
+    var log = await db.GetStringAuditLogAsync();
+    return Results.Ok(log);
+})
+.WithName("GetStringAuditLog")
+.WithTags("Strings")
+.WithSummary("Returns the change history for all application strings");
+
+// App strings — update one
+app.MapPut("/api/strings/{page}/{uniqueId}", async (HttpContext ctx, HealthDatabase db, string page, string uniqueId, UpsertStringRequest req, string lang = "en") =>
+{
+    var ip = ctx.Connection.RemoteIpAddress?.ToString() ?? "unknown";
+    await db.UpsertStringAsync(page, uniqueId, req.Value, lang, ip);
     return Results.Ok(new { page, uniqueId, lang, value = req.Value });
 })
 .WithName("UpsertString")
 .WithTags("Strings")
-.WithSummary("Creates or updates a single application string");
+.WithSummary("Creates or updates a single application string (audited)");
 
 // Weight stats — pre-computed aggregates for the dashboard
 app.MapGet("/api/weight/stats", async (HealthDatabase db, int? year) =>

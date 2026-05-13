@@ -1,4 +1,5 @@
 import styles from './DevPromptsLog.module.css'
+import { useAppStrings } from '../hooks/useAppStrings'
 
 interface PromptEntry {
   id: number
@@ -38,9 +39,12 @@ const categoryColors: Record<string, string> = {
   'Data': '#e38c00',
 }
 
-const DevPromptsLog = () => (
+const DevPromptsLog = () => {
+  const { s } = useAppStrings()
+
+  return (
   <div className={styles.page}>
-    <h2 className={styles.pageTitle}>💬 Prompts Log</h2>
+    <h2 className={styles.pageTitle}>{s('DevPromptsLog', 'page_title', '💬 Prompts Log')}</h2>
     <p className={styles.subtitle}>{PROMPTS.length} prompts in this session — summarized view of requests and outcomes</p>
 
     <div className={styles.logList}>
@@ -60,6 +64,7 @@ const DevPromptsLog = () => (
       ))}
     </div>
   </div>
-)
+  )
+}
 
 export default DevPromptsLog

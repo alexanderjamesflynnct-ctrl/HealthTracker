@@ -1,4 +1,5 @@
 import styles from './Header.module.css'
+import { useAppStrings } from '../hooks/useAppStrings'
 
 interface HeaderProps {
   firstName: string | null
@@ -6,7 +7,10 @@ interface HeaderProps {
 }
 
 const Header = ({ firstName, onNavigate }: HeaderProps) => {
-  const appName = firstName ? `${firstName}'s Health Tracker` : 'Alex Health Tracker'
+  const { s } = useAppStrings()
+  const suffix = s('Header', 'app_name_suffix', 'Health Tracker')
+  const tagline = s('Header', 'tagline', 'Your personal wellness dashboard')
+  const appName = firstName ? `${firstName}'s ${suffix}` : `Alex ${suffix}`
   const initial = firstName ? firstName[0].toUpperCase() : 'A'
   const displayName = firstName ?? 'Alex'
 
@@ -41,7 +45,7 @@ const Header = ({ firstName, onNavigate }: HeaderProps) => {
         </div>
         <div className={styles.titleGroup}>
           <h1 className={styles.appName}>{appName}</h1>
-          <span className={styles.tagline}>Your personal wellness dashboard</span>
+          <span className={styles.tagline}>{tagline}</span>
         </div>
       </div>
 

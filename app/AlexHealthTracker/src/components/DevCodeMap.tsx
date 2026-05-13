@@ -1,4 +1,5 @@
 import styles from './DevCodeMap.module.css'
+import { useAppStrings } from '../hooks/useAppStrings'
 
 interface CodeMapRow {
   uiPage: string
@@ -49,10 +50,13 @@ const methodColors: Record<string, string> = {
   DELETE: '#c62828',
 }
 
-const DevCodeMap = () => (
+const DevCodeMap = () => {
+  const { s } = useAppStrings()
+
+  return (
   <div className={styles.page}>
-    <h2 className={styles.pageTitle}>🗺️ Code Map</h2>
-    <p className={styles.subtitle}>End-to-end traceability: UI → API → Database</p>
+    <h2 className={styles.pageTitle}>{s('DevCodeMap', 'page_title', '🗺️ Code Map')}</h2>
+    <p className={styles.subtitle}>{s('DevCodeMap', 'subtitle', 'End-to-end traceability: UI → API → Database')}</p>
 
     <div className={styles.tableWrapper}>
       <table className={styles.table} aria-label="Application code map">
@@ -87,6 +91,7 @@ const DevCodeMap = () => (
       </table>
     </div>
   </div>
-)
+  )
+}
 
 export default DevCodeMap
