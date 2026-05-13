@@ -320,7 +320,7 @@ const StepReporting = () => {
           <h3 id="step-totals-heading" className={styles.sectionHeading}>{s('StepReporting', 'totals_heading', 'Total Steps by Year')}</h3>
           {!totalsLoading && !totalsError && <span className={styles.badge}>{totalsData.length} years</span>}
         </div>
-        <p className={styles.chartHint}>Sum of all daily step counts per year (deduped to max per day).</p>
+        <p className={styles.chartHint}>{s('StepReporting', 'totals_hint', 'Sum of all daily step counts per year (deduped to max per day).')}</p>
         {totalsLoading ? <div className={styles.skeleton} aria-hidden="true" /> :
          totalsError   ? <p className={styles.errorText}>⚠️ Could not load data — make sure the API is running.</p> :
          <div className={styles.totalsChart}>
@@ -362,7 +362,7 @@ const StepReporting = () => {
         <AxisControls autoMin={allAutoMin} autoMax={allAutoMax}
           yMinInput={allYMin} yMaxInput={allYMax}
           setYMinInput={setAllYMin} setYMaxInput={setAllYMax} />
-        <p className={styles.chartHint}>Min→Max range bars with Min / Avg / Max lines. Scroll to see all months.</p>
+        <p className={styles.chartHint}>{s('StepReporting', 'alltime_hint', 'Min→Max range bars with Min / Avg / Max lines. Scroll to see all months.')}</p>
         {allLoading ? <div className={styles.skeleton} aria-hidden="true" /> :
          allError   ? <p className={styles.errorText}>⚠️ Could not load data — make sure the API is running.</p> :
          <WhiskerChart points={allPoints} domain={allDomain} scrollToRight latestSteps={latestSteps} />}
@@ -391,7 +391,7 @@ const StepReporting = () => {
           yMinInput={yoyYMin} yMaxInput={yoyYMax}
           setYMinInput={setYoyYMin} setYMaxInput={setYoyYMax} />
         <p className={styles.chartHint}>
-          Each bar is one year's data for <strong>{months[selectedMonth - 1]}</strong>. Oldest year on the left.
+          {s('StepReporting', 'yoy_hint_prefix', 'Each bar is one year\'s data for')} <strong>{months[selectedMonth - 1]}</strong>. {s('StepReporting', 'yoy_hint_suffix', 'Oldest year on the left.')}
         </p>
         {yoyLoading ? <div className={styles.skeleton} aria-hidden="true" /> :
          yoyError   ? <p className={styles.errorText}>⚠️ Could not load data — make sure the API is running.</p> :
@@ -409,7 +409,7 @@ const StepReporting = () => {
           yMinInput={annualYMin} yMaxInput={annualYMax}
           setYMinInput={setAnnualYMin} setYMaxInput={setAnnualYMax} />
         <p className={styles.chartHint}>
-          Each bar represents a full year — min, max, and average daily steps across all days that year.
+          {s('StepReporting', 'annual_hint', 'Each bar represents a full year — min, max, and average daily steps across all days that year.')}
         </p>
         {annualLoading ? <div className={styles.skeleton} aria-hidden="true" /> :
          annualError   ? <p className={styles.errorText}>⚠️ Could not load data — make sure the API is running.</p> :

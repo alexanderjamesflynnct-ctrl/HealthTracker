@@ -68,6 +68,23 @@ public static class DefaultStrings
         S("WeightEntry", "replace_title", "⚠️ Reading Already Exists"),
         S("WeightEntry", "replace_question", "Do you want to replace the existing reading?"),
 
+        // Step Reporting hints
+        S("StepReporting", "totals_hint", "Sum of all daily step counts per year (deduped to max per day)."),
+        S("StepReporting", "alltime_hint", "Min→Max range bars with Min / Avg / Max lines. Scroll to see all months."),
+        S("StepReporting", "yoy_hint_prefix", "Each bar is one year's data for"),
+        S("StepReporting", "yoy_hint_suffix", "Oldest year on the left."),
+        S("StepReporting", "annual_hint", "Each bar represents a full year — min, max, and average daily steps across all days that year."),
+
+        // Weight Reporting hints
+        S("WeightReporting", "alltime_hint", "Min→Max range bars with Min / Avg / Max lines. Scroll to see all months."),
+        S("WeightReporting", "yoy_hint_prefix", "Each bar is one year's data for"),
+        S("WeightReporting", "yoy_hint_suffix", "Oldest year on the left."),
+        S("WeightReporting", "annual_hint", "Each bar represents a full year — min, max, and average weight across all readings for that year. Oldest on the left."),
+
+        // Activity Dashboard extras
+        S("ActivityDashboard", "days_label", "days"),
+        S("ActivityDashboard", "avg_percent", "avg is {0}% of best day"),
+
         // Raw Data pages
         S("PedometerRawData", "page_title", "🏃 Activity — Raw Data"),
         S("WeightRawData", "page_title", "⚖️ Weight — Raw Data"),
@@ -287,6 +304,23 @@ public static class DefaultStrings
         Ja("WeightEntry", "save_button", "体重を保存"),
         Ja("WeightEntry", "replace_title", "⚠️ 既存の記録があります"),
         Ja("WeightEntry", "replace_question", "既存の記録を置き換えますか？"),
+
+        // Step Reporting hints
+        Ja("StepReporting", "totals_hint", "年間の1日あたり最大歩数の合計（デバイス重複排除済み）。"),
+        Ja("StepReporting", "alltime_hint", "最小→最大の範囲バーと最小/平均/最大のライン。スクロールして全ての月を表示。"),
+        Ja("StepReporting", "yoy_hint_prefix", "各バーは次の月の年別データです:"),
+        Ja("StepReporting", "yoy_hint_suffix", "最も古い年が左側。"),
+        Ja("StepReporting", "annual_hint", "各バーは1年間全体を表します — その年の全日の最小、最大、平均歩数。"),
+
+        // Weight Reporting hints
+        Ja("WeightReporting", "alltime_hint", "最小→最大の範囲バーと最小/平均/最大のライン。スクロールして全ての月を表示。"),
+        Ja("WeightReporting", "yoy_hint_prefix", "各バーは次の月の年別データです:"),
+        Ja("WeightReporting", "yoy_hint_suffix", "最も古い年が左側。"),
+        Ja("WeightReporting", "annual_hint", "各バーは1年間全体を表します — その年の全記録の最小、最大、平均体重。最も古い年が左側。"),
+
+        // Activity Dashboard extras
+        Ja("ActivityDashboard", "days_label", "日間"),
+        Ja("ActivityDashboard", "avg_percent", "平均は最高日の{0}%"),
 
         // Raw Data pages
         Ja("PedometerRawData", "page_title", "🏃 アクティビティ — 生データ"),

@@ -17,6 +17,16 @@ interface ActivityStats {
 
 const ActivityDashboard = () => {
   const { s } = useAppStrings()
+  const monthKeys = [
+    'month_jan','month_feb','month_mar','month_apr','month_may','month_jun',
+    'month_jul','month_aug','month_sep','month_oct','month_nov','month_dec',
+  ]
+  const localizeMonth = (m: MonthlyActivityStats) => {
+    const monthNum = parseInt(m.month.slice(5, 7), 10)
+    const year = m.month.slice(0, 4)
+    const monthName = s('Common', monthKeys[monthNum - 1], m.monthLabel)
+    return `${monthName} ${year}`
+  }
   const [stats, setStats] = useState<ActivityStats | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
@@ -70,11 +80,11 @@ const ActivityDashboard = () => {
         <div className={styles.monthlyGrid}>
           {stats.monthlyStats.map(m => (
             <article key={m.month} className={styles.monthlyCard}
-              aria-label={`${m.monthLabel} step stats`}>
+              aria-label={`${localizeMonth(m)} step stats`}>
 
               <div className={styles.cardHeader}>
-                <span className={styles.monthLabel}>{m.monthLabel}</span>
-                <span className={styles.dayCount}>{m.dayCount} days</span>
+                <span className={styles.monthLabel}>{localizeMonth(m)}</span>
+                <span className={styles.dayCount}>{m.dayCount} {s('ActivityDashboard', 'days_label', 'days')}</span>
               </div>
 
               <div className={styles.statRows}>
@@ -103,7 +113,7 @@ const ActivityDashboard = () => {
                 />
               </div>
               <div className={styles.barLabel} aria-hidden="true">
-                avg is {Math.round((m.avgSteps / m.maxSteps) * 100)}% of best day
+                {s('ActivityDashboard', 'avg_percent', 'avg is {0}% of best day').replace('{0}', String(Math.round((m.avgSteps / m.maxSteps) * 100)))}
               </div>
             </article>
           ))}

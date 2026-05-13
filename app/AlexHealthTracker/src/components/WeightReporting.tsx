@@ -308,7 +308,7 @@ const WeightReporting = () => {
         <AxisControls uom={uom} autoMin={allAutoMin} autoMax={allAutoMax}
           yMinInput={allYMin} yMaxInput={allYMax}
           setYMinInput={setAllYMin} setYMaxInput={setAllYMax} />
-        <p className={styles.chartHint}>Min→Max range bars with Min / Avg / Max lines. Scroll to see all months.</p>
+        <p className={styles.chartHint}>{s('WeightReporting', 'alltime_hint', 'Min→Max range bars with Min / Avg / Max lines. Scroll to see all months.')}</p>
         {allLoading ? <div className={styles.skeleton} aria-hidden="true" /> :
          allError   ? <p className={styles.errorText}>⚠️ Could not load data — make sure the API is running.</p> :
          <WhiskerChart points={allPoints} domain={allDomain} uom={uom} scrollToRight latestWeight={latestDisplay} />}
@@ -343,7 +343,7 @@ const WeightReporting = () => {
           yMinInput={yoyYMin} yMaxInput={yoyYMax}
           setYMinInput={setYoyYMin} setYMaxInput={setYoyYMax} />
         <p className={styles.chartHint}>
-          Each bar is one year's data for <strong>{months[selectedMonth - 1]}</strong>. Oldest year on the left.
+          {s('WeightReporting', 'yoy_hint_prefix', 'Each bar is one year\'s data for')} <strong>{months[selectedMonth - 1]}</strong>. {s('WeightReporting', 'yoy_hint_suffix', 'Oldest year on the left.')}
         </p>
         {yoyLoading ? <div className={styles.skeleton} aria-hidden="true" /> :
          yoyError   ? <p className={styles.errorText}>⚠️ Could not load data — make sure the API is running.</p> :
@@ -361,7 +361,7 @@ const WeightReporting = () => {
           yMinInput={annualYMin} yMaxInput={annualYMax}
           setYMinInput={setAnnualYMin} setYMaxInput={setAnnualYMax} />
         <p className={styles.chartHint}>
-          Each bar represents a full year — min, max, and average weight across all readings for that year. Oldest on the left.
+          {s('WeightReporting', 'annual_hint', 'Each bar represents a full year — min, max, and average weight across all readings for that year. Oldest on the left.')}
         </p>
         {annualLoading ? <div className={styles.skeleton} aria-hidden="true" /> :
          annualError   ? <p className={styles.errorText}>⚠️ Could not load data — make sure the API is running.</p> :
