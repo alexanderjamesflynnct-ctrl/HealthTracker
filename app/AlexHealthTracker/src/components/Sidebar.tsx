@@ -47,6 +47,18 @@ const NAV_TREE: TreeNode[] = [
       { id: 'settings-profile', label: 'User Profile' },
     ],
   },
+  {
+    id: 'developer',
+    label: 'Developer',
+    icon: '🛠️',
+    children: [
+      { id: 'dev-prompts', label: 'Prompts Log' },
+      { id: 'dev-code-stats', label: 'Code Stats' },
+      { id: 'dev-code-map', label: 'Code Map' },
+      { id: 'dev-api-docs', label: 'API Documentation' },
+      { id: 'dev-strings', label: 'String Editor' },
+    ],
+  },
 ]
 
 interface SidebarProps {

@@ -26,6 +26,10 @@ var app = builder.Build();
 
 // Ensure the user_profile table exists on startup
 await app.Services.GetRequiredService<HealthDatabase>().EnsureProfileTableAsync();
+await app.Services.GetRequiredService<HealthDatabase>().EnsureAppStringsTableAsync();
+
+// Seed default strings
+await app.Services.GetRequiredService<HealthDatabase>().SeedStringsAsync(DefaultStrings.All);
 
 app.UseCors();
 
@@ -171,6 +175,26 @@ app.MapPut("/api/activity/date/{existingUuid}", async (HealthDatabase db, string
 .WithName("ReplaceSteps")
 .WithTags("Activity")
 .WithSummary("Replaces an existing step reading by UUID");
+
+// App strings — get all
+app.MapGet("/api/strings", async (HealthDatabase db, string lang = "en") =>
+{
+    var strings = await db.GetAllStringsAsync(lang);
+    return Results.Ok(strings);
+})
+.WithName("GetAllStrings")
+.WithTags("Strings")
+.WithSummary("Returns all application strings for a language");
+
+// App strings — update one
+app.MapPut("/api/strings/{page}/{uniqueId}", async (HealthDatabase db, string page, string uniqueId, UpsertStringRequest req, string lang = "en") =>
+{
+    await db.UpsertStringAsync(page, uniqueId, req.Value, lang);
+    return Results.Ok(new { page, uniqueId, lang, value = req.Value });
+})
+.WithName("UpsertString")
+.WithTags("Strings")
+.WithSummary("Creates or updates a single application string");
 
 // Weight stats — pre-computed aggregates for the dashboard
 app.MapGet("/api/weight/stats", async (HealthDatabase db, int? year) =>
