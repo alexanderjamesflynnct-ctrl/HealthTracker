@@ -8,6 +8,7 @@ interface UserProfile {
   heightCm: number
   heightUom: 'cm' | 'ft'
   weightUom: 'kg' | 'lbs'
+  language: string
   updatedAt: string
 }
 
@@ -19,6 +20,40 @@ const cmToFeetInches = (cm: number): string => {
   const inches = Math.round(totalInches % 12)
   return `${feet}′ ${inches}″`
 }
+
+interface LanguageOption {
+  code: string
+  english: string
+  native: string
+}
+
+const LANGUAGES: LanguageOption[] = [
+  { code: 'en', english: 'English', native: 'English' },
+  { code: 'es', english: 'Spanish', native: 'Español' },
+  { code: 'fr', english: 'French', native: 'Français' },
+  { code: 'de', english: 'German', native: 'Deutsch' },
+  { code: 'it', english: 'Italian', native: 'Italiano' },
+  { code: 'pt', english: 'Portuguese', native: 'Português' },
+  { code: 'nl', english: 'Dutch', native: 'Nederlands' },
+  { code: 'ja', english: 'Japanese', native: '日本語' },
+  { code: 'ko', english: 'Korean', native: '한국어' },
+  { code: 'zh', english: 'Chinese (Simplified)', native: '中文' },
+  { code: 'ar', english: 'Arabic', native: 'العربية' },
+  { code: 'hi', english: 'Hindi', native: 'हिन्दी' },
+  { code: 'ru', english: 'Russian', native: 'Русский' },
+  { code: 'pl', english: 'Polish', native: 'Polski' },
+  { code: 'sv', english: 'Swedish', native: 'Svenska' },
+  { code: 'da', english: 'Danish', native: 'Dansk' },
+  { code: 'fi', english: 'Finnish', native: 'Suomi' },
+  { code: 'no', english: 'Norwegian', native: 'Norsk' },
+  { code: 'tr', english: 'Turkish', native: 'Türkçe' },
+  { code: 'vi', english: 'Vietnamese', native: 'Tiếng Việt' },
+  { code: 'th', english: 'Thai', native: 'ไทย' },
+  { code: 'he', english: 'Hebrew', native: 'עברית' },
+  { code: 'uk', english: 'Ukrainian', native: 'Українська' },
+  { code: 'cs', english: 'Czech', native: 'Čeština' },
+  { code: 'el', english: 'Greek', native: 'Ελληνικά' },
+]
 
 type UomOption<T extends string> = { value: T; label: string; desc: string }
 
@@ -84,6 +119,7 @@ const ProfileSettings = ({ onSaved }: { onSaved: (firstName: string) => void }) 
     heightCm: '',
     heightUom: 'cm' as 'cm' | 'ft',
     weightUom: 'kg' as 'kg' | 'lbs',
+    language: 'en',
   })
 
   useEffect(() => {
@@ -98,6 +134,7 @@ const ProfileSettings = ({ onSaved }: { onSaved: (firstName: string) => void }) 
             heightCm:  String(data.heightCm),
             heightUom: data.heightUom ?? 'cm',
             weightUom: data.weightUom ?? 'kg',
+            language:  data.language ?? 'en',
           })
         }
         setLoading(false)
@@ -135,6 +172,7 @@ const ProfileSettings = ({ onSaved }: { onSaved: (firstName: string) => void }) 
           heightCm:  heightNum,
           heightUom: form.heightUom,
           weightUom: form.weightUom,
+          language:  form.language,
         }),
       })
       if (!res.ok) throw new Error(`HTTP ${res.status}`)
@@ -227,6 +265,25 @@ const ProfileSettings = ({ onSaved }: { onSaved: (firstName: string) => void }) 
             value={form.weightUom}
             onChange={v => handleChange('weightUom', v)}
           />
+
+          <div className={styles.divider} />
+
+          {/* Language preference */}
+          <div className={styles.field}>
+            <label className={styles.label} htmlFor="language">Language</label>
+            <select
+              id="language"
+              className={styles.input}
+              value={form.language}
+              onChange={e => handleChange('language', e.target.value)}
+            >
+              {LANGUAGES.map(lang => (
+                <option key={lang.code} value={lang.code}>
+                  {lang.english} — {lang.native} ({lang.code})
+                </option>
+              ))}
+            </select>
+          </div>
 
           {error && <div className={styles.errorBanner} role="alert">⚠️ {error}</div>}
           {success && <div className={styles.successBanner} role="status">✅ Profile saved successfully!</div>}

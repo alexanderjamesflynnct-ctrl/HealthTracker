@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import styles from './WeightDashboard.module.css'
 import { useWeightUom } from '../hooks/useWeightUom'
+import { useAppStrings } from '../hooks/useAppStrings'
 
 interface MonthlyWeightStats {
   month: string
@@ -42,6 +43,7 @@ const WeightDashboard = () => {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
   const weightUom = useWeightUom()
+  const { s } = useAppStrings()
   const isPrimLbs = weightUom === 'lbs'
 
   const fmt = (kg: number, lbs: number) =>
@@ -59,7 +61,7 @@ const WeightDashboard = () => {
   if (loading) {
     return (
       <div className={styles.page}>
-        <h2 className={styles.pageTitle}>⚖️ Weight Dashboard</h2>
+        <h2 className={styles.pageTitle}>{s('WeightDashboard', 'page_title', '⚖️ Weight Dashboard')}</h2>
         <div className={styles.summaryGrid}>
           {[0, 1, 2].map(i => (
             <div key={i} className={`${styles.summaryTile} ${styles.skeleton}`} aria-hidden="true" />
@@ -72,7 +74,7 @@ const WeightDashboard = () => {
   if (error || !stats) {
     return (
       <div className={styles.page}>
-        <h2 className={styles.pageTitle}>⚖️ Weight Dashboard</h2>
+        <h2 className={styles.pageTitle}>{s('WeightDashboard', 'page_title', '⚖️ Weight Dashboard')}</h2>
         <p className={styles.errorText}>⚠️ Could not load weight stats — make sure the API is running.</p>
       </div>
     )
@@ -113,7 +115,7 @@ const WeightDashboard = () => {
 
   return (
     <div className={styles.page}>
-      <h2 className={styles.pageTitle}>⚖️ Weight Dashboard</h2>
+      <h2 className={styles.pageTitle}>{s('WeightDashboard', 'page_title', '⚖️ Weight Dashboard')}</h2>
 
       {/* Summary tiles */}
       <section aria-labelledby="weight-summary-heading">

@@ -6,6 +6,7 @@ import {
 } from 'recharts'
 import styles from './WeightReporting.module.css'
 import { useWeightUom } from '../hooks/useWeightUom'
+import { useAppStrings } from '../hooks/useAppStrings'
 
 interface MonthlyWeightStats {
   month: string
@@ -198,6 +199,7 @@ const autoBounds = (points: ChartPoint[]) => {
 // ── Main component ───────────────────────────────────────
 const WeightReporting = () => {
   const weightUom = useWeightUom()
+  const { s } = useAppStrings()
   const isPrimLbs = weightUom === 'lbs'
   const uom = isPrimLbs ? 'lbs' : 'kg'
 
@@ -289,7 +291,7 @@ const WeightReporting = () => {
 
   return (
     <div className={styles.page}>
-      <h2 className={styles.pageTitle}>⚖️ Weight Reporting</h2>
+      <h2 className={styles.pageTitle}>{s('WeightReporting', 'page_title', '⚖️ Weight Reporting')}</h2>
 
       {/* ── All-time chart ── */}
       <section aria-labelledby="all-time-heading">

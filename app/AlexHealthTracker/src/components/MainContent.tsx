@@ -7,6 +7,11 @@ import WeightEntry from './WeightEntry'
 import WeightReporting from './WeightReporting'
 import StepReporting from './StepReporting'
 import StepEntry from './StepEntry'
+import DevPromptsLog from './DevPromptsLog'
+import DevCodeStats from './DevCodeStats'
+import DevCodeMap from './DevCodeMap'
+import DevStringEditor from './DevStringEditor'
+import DevStringChangeLog from './DevStringChangeLog'
 import ActivityDashboard from './ActivityDashboard'
 import ProfileSettings from './ProfileSettings'
 import { useWeightUom } from '../hooks/useWeightUom'
@@ -403,6 +408,12 @@ const MainContent = ({ selectedNode, onProfileSaved, firstName, onNavigate }: Ma
   const showWeightReporting   = selectedNode === 'Weight Reporting'
   const showStepReporting     = selectedNode === 'Step Reporting'
   const showStepEntry         = selectedNode === 'Record Steps'
+  const showDevPrompts        = selectedNode === 'Prompts Log'
+  const showDevCodeStats      = selectedNode === 'Code Stats'
+  const showDevCodeMap        = selectedNode === 'Code Map'
+  const showDevApiDocs        = selectedNode === 'API Documentation'
+  const showDevStrings        = selectedNode === 'String Editor'
+  const showDevStringLog      = selectedNode === 'String Change Log'
   const showActivityDashboard = selectedNode === 'Activity Dashboard'
   const showProfile           = selectedNode === 'User Profile'
 
@@ -426,6 +437,18 @@ const MainContent = ({ selectedNode, onProfileSaved, firstName, onNavigate }: Ma
         <StepReporting />
       ) : showStepEntry ? (
         <StepEntry />
+      ) : showDevPrompts ? (
+        <DevPromptsLog />
+      ) : showDevCodeStats ? (
+        <DevCodeStats />
+      ) : showDevCodeMap ? (
+        <DevCodeMap />
+      ) : showDevApiDocs ? (
+        <SwaggerPage />
+      ) : showDevStrings ? (
+        <DevStringEditor />
+      ) : showDevStringLog ? (
+        <DevStringChangeLog />
       ) : showActivityDashboard ? (
         <ActivityDashboard />
       ) : showProfile ? (
