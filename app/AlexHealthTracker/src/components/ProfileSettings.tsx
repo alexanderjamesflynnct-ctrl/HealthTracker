@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import styles from './ProfileSettings.module.css'
-import { reloadStrings } from '../hooks/useAppStrings'
+import { reloadStrings, useAppStrings } from '../hooks/useAppStrings'
 
 interface UserProfile {
   id: number
@@ -58,16 +58,6 @@ const LANGUAGES: LanguageOption[] = [
 
 type UomOption<T extends string> = { value: T; label: string; desc: string }
 
-const HEIGHT_OPTIONS: UomOption<'cm' | 'ft'>[] = [
-  { value: 'cm', label: 'Centimetres (cm)', desc: 'e.g. 175.5 cm' },
-  { value: 'ft', label: 'Feet & Inches (ft)', desc: 'e.g. 5′ 9″' },
-]
-
-const WEIGHT_OPTIONS: UomOption<'kg' | 'lbs'>[] = [
-  { value: 'kg',  label: 'Kilograms (kg)',  desc: 'e.g. 72.4 kg' },
-  { value: 'lbs', label: 'Pounds (lbs)',    desc: 'e.g. 159.6 lbs' },
-]
-
 const UomRadioGroup = <T extends string>({
   id,
   label,
@@ -108,6 +98,8 @@ const UomRadioGroup = <T extends string>({
 )
 
 const ProfileSettings = ({ onSaved }: { onSaved: (firstName: string) => void }) => {
+  const { s } = useAppStrings()
+
   const [profile, setProfile] = useState<UserProfile | null>(null)
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
@@ -122,6 +114,17 @@ const ProfileSettings = ({ onSaved }: { onSaved: (firstName: string) => void }) 
     weightUom: 'kg' as 'kg' | 'lbs',
     language: 'en',
   })
+
+  // UOM options defined inside the component so we can use the hook
+  const HEIGHT_OPTIONS: UomOption<'cm' | 'ft'>[] = [
+    { value: 'cm', label: s('ProfileSettings', 'uom_cm_label', 'Centimetres (cm)'), desc: 'e.g. 175.5 cm' },
+    { value: 'ft', label: s('ProfileSettings', 'uom_ft_label', 'Feet & Inches (ft)'), desc: 'e.g. 5′ 9″' },
+  ]
+
+  const WEIGHT_OPTIONS: UomOption<'kg' | 'lbs'>[] = [
+    { value: 'kg',  label: s('ProfileSettings', 'uom_kg_label', 'Kilograms (kg)'),  desc: 'e.g. 72.4 kg' },
+    { value: 'lbs', label: s('ProfileSettings', 'uom_lbs_label', 'Pounds (lbs)'),   desc: 'e.g. 159.6 lbs' },
+  ]
 
   useEffect(() => {
     fetch(API_URL)
@@ -206,9 +209,9 @@ const ProfileSettings = ({ onSaved }: { onSaved: (firstName: string) => void }) 
         <div className={styles.cardHeader}>
           <span className={styles.cardIcon} aria-hidden="true">👤</span>
           <div>
-            <h2 className={styles.cardTitle}>User Profile</h2>
+            <h2 className={styles.cardTitle}>{s('ProfileSettings', 'page_title', 'User Profile')}</h2>
             <p className={styles.cardSubtitle}>
-              {profile ? `Last updated: ${new Date(profile.updatedAt).toLocaleString()}` : 'No profile saved yet'}
+              {profile ? `${s('ProfileSettings', 'last_updated', 'Last updated:')} ${new Date(profile.updatedAt).toLocaleString()}` : s('ProfileSettings', 'no_profile_yet', 'No profile saved yet')}
             </p>
           </div>
         </div>
@@ -218,13 +221,13 @@ const ProfileSettings = ({ onSaved }: { onSaved: (firstName: string) => void }) 
           {/* Name */}
           <div className={styles.row}>
             <div className={styles.field}>
-              <label className={styles.label} htmlFor="firstName">First Name</label>
+              <label className={styles.label} htmlFor="firstName">{s('ProfileSettings', 'first_name_label', 'First Name')}</label>
               <input id="firstName" className={styles.input} type="text"
                 value={form.firstName} onChange={e => handleChange('firstName', e.target.value)}
                 placeholder="e.g. Alex" autoComplete="given-name" required />
             </div>
             <div className={styles.field}>
-              <label className={styles.label} htmlFor="lastName">Last Name</label>
+              <label className={styles.label} htmlFor="lastName">{s('ProfileSettings', 'last_name_label', 'Last Name')}</label>
               <input id="lastName" className={styles.input} type="text"
                 value={form.lastName} onChange={e => handleChange('lastName', e.target.value)}
                 placeholder="e.g. Smith" autoComplete="family-name" required />
@@ -233,7 +236,7 @@ const ProfileSettings = ({ onSaved }: { onSaved: (firstName: string) => void }) 
 
           {/* Height */}
           <div className={styles.field}>
-            <label className={styles.label} htmlFor="heightCm">Height (cm)</label>
+            <label className={styles.label} htmlFor="heightCm">{s('ProfileSettings', 'height_label', 'Height (cm)')}</label>
             <div className={styles.heightRow}>
               <input id="heightCm" className={styles.input} type="number"
                 min="50" max="300" step="0.1"
@@ -250,11 +253,11 @@ const ProfileSettings = ({ onSaved }: { onSaved: (firstName: string) => void }) 
           <div className={styles.divider} />
 
           {/* UOM preferences */}
-          <p className={styles.sectionLabel}>Unit Preferences</p>
+          <p className={styles.sectionLabel}>{s('ProfileSettings', 'uom_heading', 'Unit Preferences')}</p>
 
           <UomRadioGroup
             id="heightUom"
-            label="Height Primary UOM"
+            label={s('ProfileSettings', 'height_uom_label', 'Height Primary UOM')}
             options={HEIGHT_OPTIONS}
             value={form.heightUom}
             onChange={v => handleChange('heightUom', v)}
@@ -262,7 +265,7 @@ const ProfileSettings = ({ onSaved }: { onSaved: (firstName: string) => void }) 
 
           <UomRadioGroup
             id="weightUom"
-            label="Weight Primary UOM"
+            label={s('ProfileSettings', 'weight_uom_label', 'Weight Primary UOM')}
             options={WEIGHT_OPTIONS}
             value={form.weightUom}
             onChange={v => handleChange('weightUom', v)}
@@ -272,7 +275,7 @@ const ProfileSettings = ({ onSaved }: { onSaved: (firstName: string) => void }) 
 
           {/* Language preference */}
           <div className={styles.field}>
-            <label className={styles.label} htmlFor="language">Language</label>
+            <label className={styles.label} htmlFor="language">{s('ProfileSettings', 'language_label', 'Language')}</label>
             <select
               id="language"
               className={styles.input}
@@ -288,11 +291,11 @@ const ProfileSettings = ({ onSaved }: { onSaved: (firstName: string) => void }) 
           </div>
 
           {error && <div className={styles.errorBanner} role="alert">⚠️ {error}</div>}
-          {success && <div className={styles.successBanner} role="status">✅ Profile saved successfully!</div>}
+          {success && <div className={styles.successBanner} role="status">✅ {s('ProfileSettings', 'success_message', 'Profile saved successfully!')}</div>}
 
           <div className={styles.actions}>
             <button className={styles.saveBtn} type="submit" disabled={saving} aria-busy={saving}>
-              {saving ? 'Saving…' : profile ? 'Update Profile' : 'Save Profile'}
+              {saving ? 'Saving…' : profile ? s('ProfileSettings', 'update_button', 'Update Profile') : s('ProfileSettings', 'save_button', 'Save Profile')}
             </button>
           </div>
         </form>

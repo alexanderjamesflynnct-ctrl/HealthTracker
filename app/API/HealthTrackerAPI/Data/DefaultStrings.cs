@@ -130,6 +130,58 @@ public static class DefaultStrings
         S("Common", "rows_per_page", "Rows per page"),
         S("Common", "clear_filters", "✕ Clear filters"),
         S("Common", "auto_reset", "↺ Auto"),
+        S("Common", "steps", "steps"),
+        S("Common", "steps_per_day", "steps/day"),
+        S("Common", "steps_on", "steps on"),
+        S("Common", "days", "days"),
+        S("Common", "readings", "readings"),
+        S("Common", "page_of", "Page {0} of {1}"),
+        S("Common", "total_rows", "total rows"),
+
+        // Months
+        S("Common", "month_jan", "January"),
+        S("Common", "month_feb", "February"),
+        S("Common", "month_mar", "March"),
+        S("Common", "month_apr", "April"),
+        S("Common", "month_may", "May"),
+        S("Common", "month_jun", "June"),
+        S("Common", "month_jul", "July"),
+        S("Common", "month_aug", "August"),
+        S("Common", "month_sep", "September"),
+        S("Common", "month_oct", "October"),
+        S("Common", "month_nov", "November"),
+        S("Common", "month_dec", "December"),
+
+        // UOM options
+        S("ProfileSettings", "uom_cm_label", "Centimetres (cm)"),
+        S("ProfileSettings", "uom_cm_desc", "e.g. 175.5 cm"),
+        S("ProfileSettings", "uom_ft_label", "Feet & Inches (ft)"),
+        S("ProfileSettings", "uom_ft_desc", "e.g. 5′ 9″"),
+        S("ProfileSettings", "uom_kg_label", "Kilograms (kg)"),
+        S("ProfileSettings", "uom_kg_desc", "e.g. 72.4 kg"),
+        S("ProfileSettings", "uom_lbs_label", "Pounds (lbs)"),
+        S("ProfileSettings", "uom_lbs_desc", "e.g. 159.6 lbs"),
+        S("ProfileSettings", "language_label", "Language"),
+        S("ProfileSettings", "no_profile_yet", "No profile saved yet"),
+        S("ProfileSettings", "last_updated", "Last updated:"),
+
+        // Dashboard tiles
+        S("Dashboard", "steps_label_prefix", "Steps"),
+        S("Dashboard", "weight_label_prefix", "Weight"),
+        S("Dashboard", "latest_steps", "Latest Steps"),
+        S("Dashboard", "latest_weight", "Latest Weight"),
+
+        // Chart labels
+        S("Charts", "yaxis_steps", "Steps / day"),
+        S("Charts", "yaxis_weight", "Weight"),
+        S("Charts", "yaxis_range", "Y-axis range"),
+        S("Charts", "month_selector", "Month"),
+        S("Charts", "scroll_hint", "Scroll to see all months."),
+        S("Charts", "latest_label", "Latest:"),
+        S("Charts", "min", "Min"),
+        S("Charts", "max", "Max"),
+        S("Charts", "avg", "Avg"),
+        S("Charts", "range", "Range"),
     };
 
     private static AppString S(string page, string uid, string value) => new()
@@ -276,5 +328,57 @@ public static class DefaultStrings
         Ja("Common", "rows_per_page", "表示件数"),
         Ja("Common", "clear_filters", "✕ フィルターをクリア"),
         Ja("Common", "auto_reset", "↺ 自動"),
+        Ja("Common", "steps", "歩"),
+        Ja("Common", "steps_per_day", "歩/日"),
+        Ja("Common", "steps_on", "歩 —"),
+        Ja("Common", "days", "日間"),
+        Ja("Common", "readings", "件の記録"),
+        Ja("Common", "page_of", "{1}ページ中{0}ページ"),
+        Ja("Common", "total_rows", "件の合計"),
+
+        // Months
+        Ja("Common", "month_jan", "1月"),
+        Ja("Common", "month_feb", "2月"),
+        Ja("Common", "month_mar", "3月"),
+        Ja("Common", "month_apr", "4月"),
+        Ja("Common", "month_may", "5月"),
+        Ja("Common", "month_jun", "6月"),
+        Ja("Common", "month_jul", "7月"),
+        Ja("Common", "month_aug", "8月"),
+        Ja("Common", "month_sep", "9月"),
+        Ja("Common", "month_oct", "10月"),
+        Ja("Common", "month_nov", "11月"),
+        Ja("Common", "month_dec", "12月"),
+
+        // UOM options
+        Ja("ProfileSettings", "uom_cm_label", "センチメートル (cm)"),
+        Ja("ProfileSettings", "uom_cm_desc", "例: 175.5 cm"),
+        Ja("ProfileSettings", "uom_ft_label", "フィート・インチ (ft)"),
+        Ja("ProfileSettings", "uom_ft_desc", "例: 5′ 9″"),
+        Ja("ProfileSettings", "uom_kg_label", "キログラム (kg)"),
+        Ja("ProfileSettings", "uom_kg_desc", "例: 72.4 kg"),
+        Ja("ProfileSettings", "uom_lbs_label", "ポンド (lbs)"),
+        Ja("ProfileSettings", "uom_lbs_desc", "例: 159.6 lbs"),
+        Ja("ProfileSettings", "language_label", "言語"),
+        Ja("ProfileSettings", "no_profile_yet", "プロフィールが未保存です"),
+        Ja("ProfileSettings", "last_updated", "最終更新:"),
+
+        // Dashboard tiles
+        Ja("Dashboard", "steps_label_prefix", "歩数"),
+        Ja("Dashboard", "weight_label_prefix", "体重"),
+        Ja("Dashboard", "latest_steps", "最新の歩数"),
+        Ja("Dashboard", "latest_weight", "最新の体重"),
+
+        // Chart labels
+        Ja("Charts", "yaxis_steps", "歩数 / 日"),
+        Ja("Charts", "yaxis_weight", "体重"),
+        Ja("Charts", "yaxis_range", "Y軸範囲"),
+        Ja("Charts", "month_selector", "月"),
+        Ja("Charts", "scroll_hint", "スクロールして全ての月を表示"),
+        Ja("Charts", "latest_label", "最新:"),
+        Ja("Charts", "min", "最小"),
+        Ja("Charts", "max", "最大"),
+        Ja("Charts", "avg", "平均"),
+        Ja("Charts", "range", "範囲"),
     };
 }

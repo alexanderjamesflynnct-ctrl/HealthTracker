@@ -15,6 +15,7 @@ import DevStringChangeLog from './DevStringChangeLog'
 import ActivityDashboard from './ActivityDashboard'
 import ProfileSettings from './ProfileSettings'
 import { useWeightUom } from '../hooks/useWeightUom'
+import { useAppStrings } from '../hooks/useAppStrings'
 
 interface MainContentProps {
   selectedNode: string | null
@@ -37,6 +38,7 @@ interface PedometerStats {
 }
 
 const LifetimeStats = () => {
+  const { s } = useAppStrings()
   const [stats, setStats] = useState<PedometerStats | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
@@ -60,28 +62,30 @@ const LifetimeStats = () => {
   const tiles = stats ? [
     {
       icon: '🏆',
-      label: 'All-Time Best Day',
+      label: s('Dashboard', 'alltime_best_label', 'All-Time Best Day'),
       value: stats.allTimeMaxSteps.toLocaleString(),
       sub: stats.allTimeBestDate ? `steps on ${fmtDate(stats.allTimeBestDate, true)}` : 'steps in a single day',
     },
     {
       icon: '📅',
-      label: `Best Day — ${stats.year}`,
+      label: `${s('Dashboard', 'year_best_label', 'Best Day')} — ${stats.year}`,
       value: stats.yearMaxSteps.toLocaleString(),
       sub: stats.yearBestDate ? `steps on ${fmtDate(stats.yearBestDate, false)}` : 'steps in a single day',
     },
     {
       icon: '📊',
-      label: `Daily Average — ${stats.year}`,
+      label: `${s('Dashboard', 'year_avg_label', 'Daily Average')} — ${stats.year}`,
       value: stats.yearAvgStepsPerDay.toLocaleString(),
       sub: `steps/day across ${stats.yearDistinctDays} days`,
     },
   ] : []
 
+  const headingText = s('Dashboard', 'lifetime_heading', 'Lifetime Stats')
+
   if (loading) {
     return (
       <section aria-labelledby="lifetime-heading">
-        <h3 id="lifetime-heading" className={styles.sectionHeading}>Lifetime Stats</h3>
+        <h3 id="lifetime-heading" className={styles.sectionHeading}>{headingText}</h3>
         <div className={styles.lifetimeGrid}>
           {[0, 1, 2].map(i => (
             <div key={i} className={`${styles.lifetimeTile} ${styles.lifetimeTileSkeleton}`} aria-hidden="true" />
@@ -94,7 +98,7 @@ const LifetimeStats = () => {
   if (error || !tiles.length) {
     return (
       <section aria-labelledby="lifetime-heading">
-        <h3 id="lifetime-heading" className={styles.sectionHeading}>Lifetime Stats</h3>
+        <h3 id="lifetime-heading" className={styles.sectionHeading}>{headingText}</h3>
         <p className={styles.lifetimeError}>Could not load stats — make sure the API is running.</p>
       </section>
     )
@@ -102,7 +106,7 @@ const LifetimeStats = () => {
 
   return (
     <section aria-labelledby="lifetime-heading">
-      <h3 id="lifetime-heading" className={styles.sectionHeading}>Lifetime Stats</h3>
+      <h3 id="lifetime-heading" className={styles.sectionHeading}>{headingText}</h3>
       <div className={styles.lifetimeGrid} role="list">
         {tiles.map(tile => (
           <article key={tile.label} className={styles.lifetimeTile} role="listitem" aria-label={`${tile.label}: ${tile.value}`}>
@@ -151,6 +155,7 @@ const fmtWeightDate = (d: string) => {
 }
 
 const WeightLifetimeStats = () => {
+  const { s } = useAppStrings()
   const [stats, setStats] = useState<WeightStats | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
@@ -160,8 +165,8 @@ const WeightLifetimeStats = () => {
     Promise.all([
       fetch('http://localhost:5181/api/weight/stats').then(r => r.ok ? r.json() as Promise<WeightStats> : Promise.reject()),
       fetch('http://localhost:5181/api/profile').then(r => r.ok ? r.json() : null).catch(() => null),
-    ]).then(([s, p]) => {
-      setStats(s)
+    ]).then(([statsData, p]) => {
+      setStats(statsData)
       if (p?.weightUom === 'lbs') setWeightUom('lbs')
       setLoading(false)
     }).catch(() => { setError(true); setLoading(false) })
@@ -171,10 +176,12 @@ const WeightLifetimeStats = () => {
   const fmt    = (kg: number, lbs: number) => isPrimLbs ? `${lbs} lbs` : `${kg} kg`
   const fmtSub = (kg: number, lbs: number) => isPrimLbs ? `${kg} kg`  : `${lbs} lbs`
 
+  const headingText = s('Dashboard', 'weight_stats_heading', '⚖️ Weight Stats')
+
   if (loading) {
     return (
       <section aria-labelledby="weight-lifetime-heading">
-        <h3 id="weight-lifetime-heading" className={styles.sectionHeading}>⚖️ Weight Stats</h3>
+        <h3 id="weight-lifetime-heading" className={styles.sectionHeading}>{headingText}</h3>
         <div className={styles.lifetimeGrid}>
           {[0, 1, 2].map(i => (
             <div key={i} className={`${styles.lifetimeTile} ${styles.lifetimeTileSkeleton}`} aria-hidden="true" />
@@ -187,7 +194,7 @@ const WeightLifetimeStats = () => {
   if (error || !stats) {
     return (
       <section aria-labelledby="weight-lifetime-heading">
-        <h3 id="weight-lifetime-heading" className={styles.sectionHeading}>⚖️ Weight Stats</h3>
+        <h3 id="weight-lifetime-heading" className={styles.sectionHeading}>{headingText}</h3>
         <p className={styles.lifetimeError}>Could not load weight stats — make sure the API is running.</p>
       </section>
     )
@@ -196,19 +203,19 @@ const WeightLifetimeStats = () => {
   const summaryTiles = [
     {
       icon: '🏆',
-      label: 'All-Time Lowest',
+      label: s('Dashboard', 'alltime_lowest_label', 'All-Time Lowest'),
       value: fmt(stats.allTimeMinKg, stats.allTimeMinLbs),
       sub: stats.allTimeMinDate ? `${fmtSub(stats.allTimeMinKg, stats.allTimeMinLbs)} · ${fmtWeightDate(stats.allTimeMinDate)}` : fmtSub(stats.allTimeMinKg, stats.allTimeMinLbs),
     },
     {
       icon: '📅',
-      label: `Lowest — ${stats.year}`,
+      label: `${s('Dashboard', 'year_lowest_label', 'Lowest')} — ${stats.year}`,
       value: fmt(stats.yearMinKg, stats.yearMinLbs),
       sub: stats.yearMinDate ? `${fmtSub(stats.yearMinKg, stats.yearMinLbs)} · ${fmtWeightDate(stats.yearMinDate)}` : fmtSub(stats.yearMinKg, stats.yearMinLbs),
     },
     {
       icon: '📊',
-      label: `Average — ${stats.year}`,
+      label: `${s('Dashboard', 'year_avg_weight_label', 'Average')} — ${stats.year}`,
       value: fmt(stats.yearAvgKg, stats.yearAvgLbs),
       sub: fmtSub(stats.yearAvgKg, stats.yearAvgLbs),
     },
@@ -216,7 +223,7 @@ const WeightLifetimeStats = () => {
 
   return (
     <section aria-labelledby="weight-lifetime-heading">
-      <h3 id="weight-lifetime-heading" className={styles.sectionHeading}>⚖️ Weight Stats</h3>
+      <h3 id="weight-lifetime-heading" className={styles.sectionHeading}>{headingText}</h3>
       <div className={styles.lifetimeGrid} role="list">
         {summaryTiles.map(tile => (
           <article key={tile.label} className={styles.lifetimeTile} role="listitem" aria-label={`${tile.label}: ${tile.value}`}>
@@ -266,6 +273,7 @@ const fmtShortDate = (d: string | null) => {
 const WelcomeDashboard = ({ firstName, onNavigate }: { firstName: string | null; onNavigate: (node: string) => void }) => {
   const [latest, setLatest] = useState<LatestStats | null>(null)
   const weightUom = useWeightUom()
+  const { s } = useAppStrings()
   const isPrimLbs = weightUom === 'lbs'
 
   useEffect(() => {
@@ -278,13 +286,13 @@ const WelcomeDashboard = ({ firstName, onNavigate }: { firstName: string | null;
   const statCards = latest ? [
     {
       icon: '🏃',
-      label: latest.stepsDate ? `Steps — ${fmtShortDate(latest.stepsDate)}` : 'Latest Steps',
+      label: latest.stepsDate ? `Steps — ${fmtShortDate(latest.stepsDate)}` : s('Dashboard', 'latest_steps', 'Latest Steps'),
       value: latest.steps.toLocaleString(),
       unit: 'steps',
     },
     {
       icon: '⚖️',
-      label: latest.weightDate ? `Weight — ${fmtShortDate(latest.weightDate)}` : 'Latest Weight',
+      label: latest.weightDate ? `Weight — ${fmtShortDate(latest.weightDate)}` : s('Dashboard', 'latest_weight', 'Latest Weight'),
       value: isPrimLbs ? `${latest.weightLbs} lbs` : `${latest.weightKg.toFixed(1)} kg`,
       unit:  isPrimLbs ? `${latest.weightKg.toFixed(1)} kg` : `${latest.weightLbs} lbs`,
     },
@@ -295,10 +303,10 @@ const WelcomeDashboard = ({ firstName, onNavigate }: { firstName: string | null;
     <div className={styles.welcomeBanner}>
       <div className={styles.welcomeText}>
         <h2 className={styles.welcomeHeading}>
-          Good morning, {firstName ?? 'Alex'}! 👋
+          {s('Dashboard', 'greeting_prefix', 'Good morning,')} {firstName ?? 'Alex'}! {s('Dashboard', 'greeting_suffix', '👋')}
         </h2>
         <p className={styles.welcomeSubtext}>
-          Here's a snapshot of your health today. Keep up the great work!
+          {s('Dashboard', 'snapshot_text', "Here's a snapshot of your health today. Keep up the great work!")}
         </p>
       </div>
       <div className={styles.dateChip} aria-label="Today's date">
@@ -315,7 +323,7 @@ const WelcomeDashboard = ({ firstName, onNavigate }: { firstName: string | null;
     <WeightLifetimeStats />
 
     <section aria-labelledby="stats-heading">
-      <h3 id="stats-heading" className={styles.sectionHeading}>Most Recent Data</h3>
+      <h3 id="stats-heading" className={styles.sectionHeading}>{s('Dashboard', 'recent_data_heading', 'Most Recent Data')}</h3>
       <div className={styles.statsGrid} role="list">
         {statCards ? statCards.map(card => (
           <article
@@ -342,11 +350,11 @@ const WelcomeDashboard = ({ firstName, onNavigate }: { firstName: string | null;
     </section>
 
     <section aria-labelledby="quick-links-heading" className={styles.quickLinksSection}>
-      <h3 id="quick-links-heading" className={styles.sectionHeading}>Quick Actions</h3>
+      <h3 id="quick-links-heading" className={styles.sectionHeading}>{s('Dashboard', 'quick_actions_heading', 'Quick Actions')}</h3>
       <div className={styles.quickLinks}>
         {[
-          { icon: '👟', label: "Log a Day's Steps", node: 'Record Steps' },
-          { icon: '📏', label: 'Record Weight', node: 'Record Weight' },
+          { icon: '👟', label: s('Dashboard', 'quick_action_steps', "Log a Day's Steps"), node: 'Record Steps' },
+          { icon: '📏', label: s('Dashboard', 'quick_action_weight', 'Record Weight'), node: 'Record Weight' },
         ].map(action => (
           <button
             key={action.label}
