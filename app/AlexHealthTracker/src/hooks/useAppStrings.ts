@@ -9,8 +9,10 @@ export interface AppString {
 }
 
 const API_URL = 'http://localhost:5181/api/strings'
+const PROFILE_URL = 'http://localhost:5181/api/profile'
 
 let cachedStrings: Map<string, string> | null = null
+let currentLang = 'en'
 let version = 0
 const listeners = new Set<() => void>()
 
@@ -20,7 +22,16 @@ const notifyListeners = () => {
 }
 
 const loadStrings = async () => {
-  const res = await fetch(API_URL)
+  // First check user's language preference
+  try {
+    const profileRes = await fetch(PROFILE_URL)
+    if (profileRes.ok) {
+      const profile = await profileRes.json()
+      if (profile?.language) currentLang = profile.language
+    }
+  } catch { /* default to 'en' */ }
+
+  const res = await fetch(`${API_URL}?lang=${currentLang}`)
   if (!res.ok) return
   const data = await res.json() as AppString[]
   cachedStrings = new Map(data.map(s => [`${s.page}.${s.uniqueId}`, s.value]))

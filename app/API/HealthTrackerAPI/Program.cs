@@ -30,6 +30,7 @@ await app.Services.GetRequiredService<HealthDatabase>().EnsureAppStringsTableAsy
 
 // Seed default strings
 await app.Services.GetRequiredService<HealthDatabase>().SeedStringsAsync(DefaultStrings.All);
+await app.Services.GetRequiredService<HealthDatabase>().SeedStringsAsync(DefaultStrings.Japanese);
 
 app.UseCors();
 
