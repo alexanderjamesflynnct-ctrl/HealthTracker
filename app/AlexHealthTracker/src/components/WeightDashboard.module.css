@@ -1,0 +1,176 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.pageTitle {
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  color: var(--color-primary-dark);
+  margin: 0;
+}
+
+.sectionHeading {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: var(--color-primary-dark);
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--color-primary-subtle);
+}
+
+.errorText {
+  color: #c62828;
+  font-size: var(--font-size-base);
+}
+
+/* ── Summary tiles ──────────────────────────────────────── */
+
+.summaryGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.summaryTile {
+  background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%);
+  border-radius: var(--radius-md);
+  padding: 20px 22px;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  box-shadow: var(--shadow-md);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.summaryTile:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.skeleton {
+  height: 96px;
+  background: linear-gradient(90deg, #c8e6c9 25%, #e8f5e9 50%, #c8e6c9 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+}
+
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.tileIcon {
+  font-size: 2rem;
+  line-height: 1;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.tileBody {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.tileLabel {
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: rgba(255,255,255,0.75);
+}
+
+.tileValue {
+  font-size: var(--font-size-2xl);
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1.1;
+}
+
+.tileSub {
+  font-size: var(--font-size-xs);
+  color: rgba(255,255,255,0.65);
+}
+
+/* ── Monthly breakdown ──────────────────────────────────── */
+
+.monthlySection {
+  /* gap handled by .page */
+}
+
+.monthlyGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 12px;
+}
+
+.monthlyCard {
+  background: var(--color-white);
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow var(--transition-fast), transform var(--transition-fast);
+}
+
+.monthlyCard:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+
+.monthlyLabel {
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  color: var(--color-primary-dark);
+  margin-bottom: 10px;
+  padding-bottom: 6px;
+  border-bottom: 2px solid var(--color-primary-subtle);
+}
+
+.monthlyRows {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.monthlyRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+  font-size: var(--font-size-xs);
+}
+
+.monthlyRowAvg {
+  margin-top: 2px;
+  padding-top: 4px;
+  border-top: 1px dashed var(--color-gray-200);
+}
+
+.rowKey {
+  font-weight: 600;
+  color: var(--color-gray-500);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  flex-shrink: 0;
+}
+
+.rowVal {
+  font-weight: 600;
+  color: var(--color-primary-dark);
+  text-align: right;
+}
+
+.rowLbs {
+  font-weight: 400;
+  color: var(--color-gray-500);
+}
+
+.monthlyCount {
+  margin-top: 8px;
+  font-size: var(--font-size-xs);
+  color: var(--color-gray-500);
+  text-align: right;
+}

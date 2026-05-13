@@ -1,0 +1,112 @@
+.tree {
+  list-style: none;
+  padding: 8px 0;
+  margin: 0;
+}
+
+.childList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  /* Subtle slide-in feel via max-height would need JS; keeping it simple */
+}
+
+.nodeButton {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  padding-top: 7px;
+  padding-bottom: 7px;
+  padding-right: 12px;
+  background: none;
+  border: none;
+  border-radius: var(--radius-sm);
+  text-align: left;
+  color: var(--color-sidebar-text);
+  font-size: var(--font-size-sm);
+  font-weight: 400;
+  cursor: pointer;
+  transition: background-color var(--transition-fast), color var(--transition-fast);
+  position: relative;
+  outline: none;
+}
+
+.nodeButton:hover {
+  background-color: var(--color-sidebar-hover);
+  color: var(--color-primary-dark);
+}
+
+.nodeButton:focus-visible {
+  outline: 2px solid var(--color-primary-light);
+  outline-offset: -2px;
+}
+
+.branchNode {
+  font-weight: 600;
+  color: var(--color-primary-dark);
+}
+
+.leafNode {
+  font-weight: 400;
+}
+
+.selected {
+  background-color: var(--color-sidebar-active) !important;
+  color: var(--color-primary-dark) !important;
+  font-weight: 600;
+}
+
+.selected::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background-color: var(--color-primary);
+  border-radius: 0 2px 2px 0;
+}
+
+.chevron {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 8px;
+  color: var(--color-gray-500);
+  transition: transform var(--transition-base);
+  flex-shrink: 0;
+  width: 12px;
+}
+
+.chevronOpen {
+  transform: rotate(90deg);
+}
+
+.leafDot {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background-color: var(--color-gray-300);
+  flex-shrink: 0;
+  margin-left: 3px;
+  margin-right: 1px;
+}
+
+.selected .leafDot {
+  background-color: var(--color-primary);
+}
+
+.nodeIcon {
+  font-size: 1rem;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.nodeLabel {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

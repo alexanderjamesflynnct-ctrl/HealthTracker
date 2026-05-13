@@ -1,0 +1,132 @@
+[
+  {
+    "column": "body_fat_mass",
+    "data_type": "float",
+    "never_filled": "N"
+  },
+  {
+    "column": "create_sh_ver",
+    "data_type": "integer",
+    "never_filled": "N"
+  },
+  {
+    "column": "start_time",
+    "data_type": "text",
+    "never_filled": "N"
+  },
+  {
+    "column": "custom",
+    "data_type": "unknown",
+    "never_filled": "Y"
+  },
+  {
+    "column": "height",
+    "data_type": "float",
+    "never_filled": "N"
+  },
+  {
+    "column": "weight",
+    "data_type": "float",
+    "never_filled": "N"
+  },
+  {
+    "column": "muscle_mass",
+    "data_type": "unknown",
+    "never_filled": "Y"
+  },
+  {
+    "column": "modify_sh_ver",
+    "data_type": "integer",
+    "never_filled": "N"
+  },
+  {
+    "column": "update_time",
+    "data_type": "text",
+    "never_filled": "N"
+  },
+  {
+    "column": "create_time",
+    "data_type": "text",
+    "never_filled": "N"
+  },
+  {
+    "column": "client_data_id",
+    "data_type": "unknown",
+    "never_filled": "Y"
+  },
+  {
+    "column": "skeletal_muscle",
+    "data_type": "float",
+    "never_filled": "N"
+  },
+  {
+    "column": "fat_free_mass",
+    "data_type": "float",
+    "never_filled": "N"
+  },
+  {
+    "column": "client_data_ver",
+    "data_type": "unknown",
+    "never_filled": "Y"
+  },
+  {
+    "column": "basal_metabolic_rate",
+    "data_type": "integer",
+    "never_filled": "N"
+  },
+  {
+    "column": "time_offset",
+    "data_type": "text",
+    "never_filled": "N"
+  },
+  {
+    "column": "deviceuuid",
+    "data_type": "text",
+    "never_filled": "N"
+  },
+  {
+    "column": "skeletal_muscle_mass",
+    "data_type": "float",
+    "never_filled": "N"
+  },
+  {
+    "column": "comment",
+    "data_type": "text",
+    "never_filled": "N"
+  },
+  {
+    "column": "fat_free",
+    "data_type": "float",
+    "never_filled": "N"
+  },
+  {
+    "column": "pkg_name",
+    "data_type": "text",
+    "never_filled": "N"
+  },
+  {
+    "column": "body_fat",
+    "data_type": "float",
+    "never_filled": "N"
+  },
+  {
+    "column": "datauuid",
+    "data_type": "text",
+    "never_filled": "N"
+  },
+  {
+    "column": "vfa_level",
+    "data_type": "unknown",
+    "never_filled": "Y"
+  },
+  {
+    "column": "total_body_water",
+    "data_type": "float",
+    "never_filled": "N"
+  },
+  {
+    "column": null,
+    "data_type": "unknown",
+    "never_filled": "Y"
+  }
+]
