@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import styles from './ProfileSettings.module.css'
+import { reloadStrings } from '../hooks/useAppStrings'
 
 interface UserProfile {
   id: number
@@ -180,6 +181,7 @@ const ProfileSettings = ({ onSaved }: { onSaved: (firstName: string) => void }) 
       setProfile(saved)
       setSuccess(true)
       onSaved(saved.firstName)
+      await reloadStrings()
     } catch (err) {
       setError(`Failed to save: ${err}`)
     } finally {

@@ -59,17 +59,15 @@ public class HealthDatabase
 
     public async Task<IReadOnlyList<AppString>> GetAllStringsAsync(string language = "en")
     {
-        const string sql = """
-            SELECT application, page, unique_id, language, value
-            FROM app_strings
-            WHERE language = @lang
-            ORDER BY page, unique_id
-            """;
+        var filterByLang = language != "all";
+        var sql = filterByLang
+            ? "SELECT application, page, unique_id, language, value FROM app_strings WHERE language = @lang ORDER BY page, unique_id"
+            : "SELECT application, page, unique_id, language, value FROM app_strings ORDER BY page, unique_id, language";
         var results = new List<AppString>();
         await using var connection = new SqliteConnection(_connectionString);
         await connection.OpenAsync();
         await using var cmd = new SqliteCommand(sql, connection);
-        cmd.Parameters.AddWithValue("@lang", language);
+        if (filterByLang) cmd.Parameters.AddWithValue("@lang", language);
         await using var rdr = await cmd.ExecuteReaderAsync();
         while (await rdr.ReadAsync())
         {

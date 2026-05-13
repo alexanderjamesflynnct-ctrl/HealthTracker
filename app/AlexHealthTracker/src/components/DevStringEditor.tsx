@@ -24,7 +24,7 @@ const DevStringEditor = () => {
   const { s } = useAppStrings()
 
   useEffect(() => {
-    fetch(API_URL)
+    fetch(`${API_URL}?lang=all`)
       .then(r => r.ok ? r.json() as Promise<AppString[]> : Promise.reject())
       .then(d => { setStrings(d); setLoading(false) })
       .catch(() => { setError(true); setLoading(false) })
@@ -51,7 +51,7 @@ const DevStringEditor = () => {
     setSaving(true)
     setSaveSuccess(null)
     try {
-      const res = await fetch(`${API_URL}/${encodeURIComponent(s.page)}/${encodeURIComponent(s.uniqueId)}`, {
+      const res = await fetch(`${API_URL}/${encodeURIComponent(s.page)}/${encodeURIComponent(s.uniqueId)}?lang=${encodeURIComponent(s.language)}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ value: editValue }),
