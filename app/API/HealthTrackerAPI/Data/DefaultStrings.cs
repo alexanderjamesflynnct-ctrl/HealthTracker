@@ -182,6 +182,28 @@ public static class DefaultStrings
         S("Charts", "max", "Max"),
         S("Charts", "avg", "Avg"),
         S("Charts", "range", "Range"),
+
+        // Raw Data table headers
+        S("PedometerRawData", "col_date", "Date / Time"),
+        S("PedometerRawData", "col_steps", "Steps"),
+        S("PedometerRawData", "col_calories", "Calories"),
+        S("PedometerRawData", "search_date", "Search date…"),
+        S("PedometerRawData", "search_placeholder", "Search…"),
+        S("PedometerRawData", "no_records", "No records match your filters."),
+
+        S("WeightRawData", "col_date", "Date / Time"),
+        S("WeightRawData", "col_weight_kg", "Weight (kg)"),
+        S("WeightRawData", "col_weight_lbs", "Weight (lbs)"),
+
+        // Step Entry
+        S("StepEntry", "no_existing", "No existing reading for this date"),
+        S("StepEntry", "existing_warning", "A reading already exists for this date:"),
+        S("StepEntry", "checking", "Checking…"),
+        S("StepEntry", "save_replace_hint", "Save (will prompt to replace)"),
+
+        // Dashboard date prefix
+        S("Dashboard", "steps_label_prefix", "Steps"),
+        S("Dashboard", "weight_label_prefix", "Weight"),
     };
 
     private static AppString S(string page, string uid, string value) => new()
@@ -380,5 +402,27 @@ public static class DefaultStrings
         Ja("Charts", "max", "最大"),
         Ja("Charts", "avg", "平均"),
         Ja("Charts", "range", "範囲"),
+
+        // Raw Data table headers
+        Ja("PedometerRawData", "col_date", "日付 / 時刻"),
+        Ja("PedometerRawData", "col_steps", "歩数"),
+        Ja("PedometerRawData", "col_calories", "カロリー"),
+        Ja("PedometerRawData", "search_date", "日付を検索…"),
+        Ja("PedometerRawData", "search_placeholder", "検索…"),
+        Ja("PedometerRawData", "no_records", "フィルターに一致する記録がありません。"),
+
+        Ja("WeightRawData", "col_date", "日付 / 時刻"),
+        Ja("WeightRawData", "col_weight_kg", "体重 (kg)"),
+        Ja("WeightRawData", "col_weight_lbs", "体重 (lbs)"),
+
+        // Step Entry
+        Ja("StepEntry", "no_existing", "この日付に既存の記録はありません"),
+        Ja("StepEntry", "existing_warning", "この日付に既存の記録があります:"),
+        Ja("StepEntry", "checking", "確認中…"),
+        Ja("StepEntry", "save_replace_hint", "保存（置き換え確認あり）"),
+
+        // Dashboard date prefix
+        Ja("Dashboard", "steps_label_prefix", "歩数"),
+        Ja("Dashboard", "weight_label_prefix", "体重"),
     };
 }

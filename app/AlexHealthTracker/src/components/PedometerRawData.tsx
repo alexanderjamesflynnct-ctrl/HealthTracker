@@ -1,5 +1,6 @@
 import { useEffect, useState, useMemo, useCallback } from 'react'
 import styles from './PedometerRawData.module.css'
+import { useAppStrings } from '../hooks/useAppStrings'
 
 interface PedometerRow {
   dataUuid: string
@@ -28,6 +29,7 @@ const SortIcon = ({ col, sortKey, sortDir }: { col: SortKey; sortKey: SortKey; s
 }
 
 const PedometerRawData = () => {
+  const { s } = useAppStrings()
   const [result, setResult] = useState<PagedResult | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -126,7 +128,7 @@ const PedometerRawData = () => {
       {/* Toolbar */}
       <div className={styles.toolbar}>
         <div className={styles.toolbarLeft}>
-          <h2 className={styles.title}>🏃 Activity — Raw Data</h2>
+          <h2 className={styles.title}>{s('PedometerRawData', 'page_title', '🏃 Activity — Raw Data')}</h2>
           {result && (
             <span className={styles.badge}>
               {result.totalCount.toLocaleString()} row{result.totalCount !== 1 ? 's' : ''}
@@ -161,38 +163,38 @@ const PedometerRawData = () => {
               <th scope="col" className={thClass('dayTime')} onClick={() => handleSort('dayTime')}
                 aria-sort={sortKey === 'dayTime' ? (sortDir === 'asc' ? 'ascending' : 'descending') : 'none'}>
                 <span className={styles.thContent}>
-                  Date / Time <SortIcon col="dayTime" sortKey={sortKey} sortDir={sortDir} />
+                  {s('PedometerRawData', 'col_date', 'Date / Time')} <SortIcon col="dayTime" sortKey={sortKey} sortDir={sortDir} />
                 </span>
               </th>
               <th scope="col" className={thClass('stepCount')} onClick={() => handleSort('stepCount')}
                 aria-sort={sortKey === 'stepCount' ? (sortDir === 'asc' ? 'ascending' : 'descending') : 'none'}>
                 <span className={styles.thContent}>
-                  Steps <SortIcon col="stepCount" sortKey={sortKey} sortDir={sortDir} />
+                  {s('PedometerRawData', 'col_steps', 'Steps')} <SortIcon col="stepCount" sortKey={sortKey} sortDir={sortDir} />
                 </span>
               </th>
               <th scope="col" className={thClass('calorie')} onClick={() => handleSort('calorie')}
                 aria-sort={sortKey === 'calorie' ? (sortDir === 'asc' ? 'ascending' : 'descending') : 'none'}>
                 <span className={styles.thContent}>
-                  Calories <SortIcon col="calorie" sortKey={sortKey} sortDir={sortDir} />
+                  {s('PedometerRawData', 'col_calories', 'Calories')} <SortIcon col="calorie" sortKey={sortKey} sortDir={sortDir} />
                 </span>
               </th>
             </tr>
             {/* Search row */}
             <tr className={styles.searchRow}>
               <th scope="col" className={styles.searchCell}>
-                <input className={styles.searchInput} type="text" placeholder="Search date…"
+                <input className={styles.searchInput} type="text" placeholder={s('PedometerRawData', 'search_date', 'Search date…')}
                   value={searchInput.dayTime}
                   onChange={e => handleSearchChange('dayTime', e.target.value)}
                   aria-label="Filter by date/time" />
               </th>
               <th scope="col" className={styles.searchCell}>
-                <input className={`${styles.searchInput} ${styles.searchInputNum}`} type="text" placeholder="Search…"
+                <input className={`${styles.searchInput} ${styles.searchInputNum}`} type="text" placeholder={s('PedometerRawData', 'search_placeholder', 'Search…')}
                   value={searchInput.stepCount}
                   onChange={e => handleSearchChange('stepCount', e.target.value)}
                   aria-label="Filter by step count" />
               </th>
               <th scope="col" className={styles.searchCell}>
-                <input className={`${styles.searchInput} ${styles.searchInputNum}`} type="text" placeholder="Search…"
+                <input className={`${styles.searchInput} ${styles.searchInputNum}`} type="text" placeholder={s('PedometerRawData', 'search_placeholder', 'Search…')}
                   value={searchInput.calorie}
                   onChange={e => handleSearchChange('calorie', e.target.value)}
                   aria-label="Filter by calories" />
@@ -211,7 +213,7 @@ const PedometerRawData = () => {
               ))
             ) : result?.items.length === 0 ? (
               <tr>
-                <td colSpan={3} className={styles.emptyCell}>No records match your filters.</td>
+                <td colSpan={3} className={styles.emptyCell}>{s('PedometerRawData', 'no_records', 'No records match your filters.')}</td>
               </tr>
             ) : (
               result?.items.map(row => (

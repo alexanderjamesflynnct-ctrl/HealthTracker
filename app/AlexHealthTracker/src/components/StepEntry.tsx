@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import styles from './WeightEntry.module.css'
+import { useAppStrings } from '../hooks/useAppStrings'
 
 const API_BASE = 'http://localhost:5181/api/activity'
 
@@ -17,16 +18,18 @@ const ConfirmReplaceDialog = ({
   newSteps,
   onConfirm,
   onCancel,
+  s,
 }: {
   date: string
   existingSteps: number
   newSteps: number
   onConfirm: () => void
   onCancel: () => void
+  s: (page: string, uniqueId: string, fallback?: string) => string
 }) => (
   <div className={styles.dialogOverlay} role="dialog" aria-modal="true" aria-labelledby="confirm-title">
     <div className={styles.dialog}>
-      <h3 id="confirm-title" className={styles.dialogTitle}>⚠️ Reading Already Exists</h3>
+      <h3 id="confirm-title" className={styles.dialogTitle}>{s('StepEntry', 'replace_title', '⚠️ Reading Already Exists')}</h3>
       <p className={styles.dialogBody}>
         A step reading already exists for <strong>{date}</strong>.
       </p>
@@ -40,7 +43,7 @@ const ConfirmReplaceDialog = ({
           <span className={styles.compareValue}>{newSteps.toLocaleString()} steps</span>
         </div>
       </div>
-      <p className={styles.dialogQuestion}>Do you want to replace the existing reading?</p>
+      <p className={styles.dialogQuestion}>{s('StepEntry', 'replace_question', 'Do you want to replace the existing reading?')}</p>
       <div className={styles.dialogActions}>
         <button className={styles.cancelBtn} type="button" onClick={onCancel}>Cancel</button>
         <button className={styles.confirmBtn} type="button" onClick={onConfirm}>Yes, Replace</button>
@@ -50,6 +53,7 @@ const ConfirmReplaceDialog = ({
 )
 
 const StepEntry = () => {
+  const { s } = useAppStrings()
   const [date, setDate] = useState(today())
   const [stepInput, setStepInput] = useState('')
   const [saving, setSaving] = useState(false)
@@ -128,6 +132,7 @@ const StepEntry = () => {
           newSteps={pendingSteps}
           onConfirm={() => saveSteps(pendingSteps, true)}
           onCancel={() => setPendingSteps(null)}
+          s={s}
         />
       )}
 
@@ -136,14 +141,14 @@ const StepEntry = () => {
           <div className={styles.cardHeader}>
             <span className={styles.cardIcon} aria-hidden="true">👟</span>
             <div>
-              <h2 className={styles.cardTitle}>Record Steps</h2>
-              <p className={styles.cardSubtitle}>Log a step count for a specific date</p>
+              <h2 className={styles.cardTitle}>{s('StepEntry', 'page_title', 'Record Steps')}</h2>
+              <p className={styles.cardSubtitle}>{s('StepEntry', 'subtitle', 'Log a step count for a specific date')}</p>
             </div>
           </div>
 
           <form className={styles.form} onSubmit={handleSubmit} noValidate>
             <div className={styles.field}>
-              <label className={styles.label} htmlFor="stepDate">Date</label>
+              <label className={styles.label} htmlFor="stepDate">{s('StepEntry', 'date_label', 'Date')}</label>
               <input
                 id="stepDate"
                 className={styles.input}
@@ -153,20 +158,20 @@ const StepEntry = () => {
                 onChange={e => { setDate(e.target.value); setSuccess(null); setError(null) }}
                 required
               />
-              {checkingDate && <span className={styles.dateHint}>Checking…</span>}
+              {checkingDate && <span className={styles.dateHint}>{s('StepEntry', 'checking', 'Checking…')}</span>}
               {!checkingDate && existing && (
                 <span className={styles.dateWarning}>
-                  ⚠️ A reading already exists for this date:{' '}
+                  {`⚠️ ${s('StepEntry', 'existing_warning', 'A reading already exists for this date:')}`}{' '}
                   <strong>{existing.stepCount.toLocaleString()} steps</strong>
                 </span>
               )}
               {!checkingDate && !existing && date && (
-                <span className={styles.dateOk}>✓ No existing reading for this date</span>
+                <span className={styles.dateOk}>{`✓ ${s('StepEntry', 'no_existing', 'No existing reading for this date')}`}</span>
               )}
             </div>
 
             <div className={styles.field}>
-              <label className={styles.label} htmlFor="stepCount">Step Count</label>
+              <label className={styles.label} htmlFor="stepCount">{s('StepEntry', 'steps_label', 'Step Count')}</label>
               <input
                 id="stepCount"
                 className={styles.input}
@@ -186,7 +191,7 @@ const StepEntry = () => {
 
             <div className={styles.actions}>
               <button className={styles.saveBtn} type="submit" disabled={saving || checkingDate} aria-busy={saving}>
-                {saving ? 'Saving…' : existing ? 'Save (will prompt to replace)' : 'Save Steps'}
+                {saving ? 'Saving…' : existing ? s('StepEntry', 'save_replace_hint', 'Save (will prompt to replace)') : s('StepEntry', 'save_button', 'Save Steps')}
               </button>
             </div>
           </form>

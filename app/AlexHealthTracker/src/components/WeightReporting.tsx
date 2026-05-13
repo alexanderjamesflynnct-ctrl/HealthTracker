@@ -23,9 +23,14 @@ const BAR_WIDTH = 72
 const CHART_HEIGHT = 400
 const Y_AXIS_WIDTH = 72
 
-const MONTHS = [
+const MONTHS_FALLBACK = [
   'January','February','March','April','May','June',
   'July','August','September','October','November','December',
+]
+
+const MONTH_KEYS = [
+  'month_jan','month_feb','month_mar','month_apr','month_may','month_jun',
+  'month_jul','month_aug','month_sep','month_oct','month_nov','month_dec',
 ]
 
 interface ChartPoint {
@@ -200,6 +205,7 @@ const autoBounds = (points: ChartPoint[]) => {
 const WeightReporting = () => {
   const weightUom = useWeightUom()
   const { s } = useAppStrings()
+  const months = MONTH_KEYS.map((key, i) => s('Common', key, MONTHS_FALLBACK[i]))
   const isPrimLbs = weightUom === 'lbs'
   const uom = isPrimLbs ? 'lbs' : 'kg'
 
@@ -319,7 +325,7 @@ const WeightReporting = () => {
         <div className={styles.monthSelector} role="group" aria-label="Select month to compare">
           <span className={styles.axisControlsLabel}>Month</span>
           <div className={styles.monthButtons}>
-            {MONTHS.map((name, i) => (
+            {months.map((name, i) => (
               <button
                 key={name}
                 type="button"
@@ -337,11 +343,11 @@ const WeightReporting = () => {
           yMinInput={yoyYMin} yMaxInput={yoyYMax}
           setYMinInput={setYoyYMin} setYMaxInput={setYoyYMax} />
         <p className={styles.chartHint}>
-          Each bar is one year's data for <strong>{MONTHS[selectedMonth - 1]}</strong>. Oldest year on the left.
+          Each bar is one year's data for <strong>{months[selectedMonth - 1]}</strong>. Oldest year on the left.
         </p>
         {yoyLoading ? <div className={styles.skeleton} aria-hidden="true" /> :
          yoyError   ? <p className={styles.errorText}>⚠️ Could not load data — make sure the API is running.</p> :
-         yoyData.length === 0 ? <p className={styles.errorText}>No data for {MONTHS[selectedMonth - 1]}.</p> :
+         yoyData.length === 0 ? <p className={styles.errorText}>No data for {months[selectedMonth - 1]}.</p> :
          <WhiskerChart points={yoyPoints} domain={yoyDomain} uom={uom} latestWeight={latestDisplay} />}
       </section>
 

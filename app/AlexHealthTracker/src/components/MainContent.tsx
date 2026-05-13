@@ -286,13 +286,13 @@ const WelcomeDashboard = ({ firstName, onNavigate }: { firstName: string | null;
   const statCards = latest ? [
     {
       icon: '🏃',
-      label: latest.stepsDate ? `Steps — ${fmtShortDate(latest.stepsDate)}` : s('Dashboard', 'latest_steps', 'Latest Steps'),
+      label: latest.stepsDate ? `${s('Dashboard', 'steps_label_prefix', 'Steps')} — ${fmtShortDate(latest.stepsDate)}` : s('Dashboard', 'latest_steps', 'Latest Steps'),
       value: latest.steps.toLocaleString(),
       unit: 'steps',
     },
     {
       icon: '⚖️',
-      label: latest.weightDate ? `Weight — ${fmtShortDate(latest.weightDate)}` : s('Dashboard', 'latest_weight', 'Latest Weight'),
+      label: latest.weightDate ? `${s('Dashboard', 'weight_label_prefix', 'Weight')} — ${fmtShortDate(latest.weightDate)}` : s('Dashboard', 'latest_weight', 'Latest Weight'),
       value: isPrimLbs ? `${latest.weightLbs} lbs` : `${latest.weightKg.toFixed(1)} kg`,
       unit:  isPrimLbs ? `${latest.weightKg.toFixed(1)} kg` : `${latest.weightLbs} lbs`,
     },

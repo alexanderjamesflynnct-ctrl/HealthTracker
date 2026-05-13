@@ -24,9 +24,14 @@ const BAR_WIDTH = 72
 const CHART_HEIGHT = 400
 const Y_AXIS_WIDTH = 80
 
-const MONTHS = [
+const MONTHS_FALLBACK = [
   'January','February','March','April','May','June',
   'July','August','September','October','November','December',
+]
+
+const MONTH_KEYS = [
+  'month_jan','month_feb','month_mar','month_apr','month_may','month_jun',
+  'month_jul','month_aug','month_sep','month_oct','month_nov','month_dec',
 ]
 
 interface ChartPoint {
@@ -223,6 +228,7 @@ const autoBounds = (points: ChartPoint[]) => {
 const StepReporting = () => {
   // Latest steps reference line
   const { s } = useAppStrings()
+  const months = MONTH_KEYS.map((key, i) => s('Common', key, MONTHS_FALLBACK[i]))
   const [latestSteps, setLatestSteps] = useState<number | undefined>()
   useEffect(() => {
     fetch(LATEST_URL)
@@ -311,7 +317,7 @@ const StepReporting = () => {
       {/* ── Yearly totals ── */}
       <section aria-labelledby="step-totals-heading">
         <div className={styles.chartHeader}>
-          <h3 id="step-totals-heading" className={styles.sectionHeading}>Total Steps by Year</h3>
+          <h3 id="step-totals-heading" className={styles.sectionHeading}>{s('StepReporting', 'totals_heading', 'Total Steps by Year')}</h3>
           {!totalsLoading && !totalsError && <span className={styles.badge}>{totalsData.length} years</span>}
         </div>
         <p className={styles.chartHint}>Sum of all daily step counts per year (deduped to max per day).</p>
@@ -350,7 +356,7 @@ const StepReporting = () => {
       {/* ── All-time monthly ── */}
       <section aria-labelledby="step-all-heading">
         <div className={styles.chartHeader}>
-          <h3 id="step-all-heading" className={styles.sectionHeading}>All-Time Steps by Month</h3>
+          <h3 id="step-all-heading" className={styles.sectionHeading}>{s('StepReporting', 'alltime_heading', 'All-Time Steps by Month')}</h3>
           {!allLoading && !allError && <span className={styles.badge}>{allData.length} months</span>}
         </div>
         <AxisControls autoMin={allAutoMin} autoMax={allAutoMax}
@@ -365,13 +371,13 @@ const StepReporting = () => {
       {/* ── YoY by month ── */}
       <section aria-labelledby="step-yoy-heading" className={styles.section}>
         <div className={styles.chartHeader}>
-          <h3 id="step-yoy-heading" className={styles.sectionHeading}>Year-over-Year by Month</h3>
+          <h3 id="step-yoy-heading" className={styles.sectionHeading}>{s('StepReporting', 'yoy_heading', 'Year-over-Year by Month')}</h3>
           {!yoyLoading && !yoyError && <span className={styles.badge}>{yoyData.length} years</span>}
         </div>
         <div className={styles.monthSelector} role="group" aria-label="Select month">
           <span className={styles.axisControlsLabel}>Month</span>
           <div className={styles.monthButtons}>
-            {MONTHS.map((name, i) => (
+            {months.map((name, i) => (
               <button key={name} type="button"
                 className={`${styles.monthBtn} ${selectedMonth === i + 1 ? styles.monthBtnActive : ''}`}
                 onClick={() => setSelectedMonth(i + 1)}
@@ -385,18 +391,18 @@ const StepReporting = () => {
           yMinInput={yoyYMin} yMaxInput={yoyYMax}
           setYMinInput={setYoyYMin} setYMaxInput={setYoyYMax} />
         <p className={styles.chartHint}>
-          Each bar is one year's data for <strong>{MONTHS[selectedMonth - 1]}</strong>. Oldest year on the left.
+          Each bar is one year's data for <strong>{months[selectedMonth - 1]}</strong>. Oldest year on the left.
         </p>
         {yoyLoading ? <div className={styles.skeleton} aria-hidden="true" /> :
          yoyError   ? <p className={styles.errorText}>⚠️ Could not load data — make sure the API is running.</p> :
-         yoyData.length === 0 ? <p className={styles.errorText}>No data for {MONTHS[selectedMonth - 1]}.</p> :
+         yoyData.length === 0 ? <p className={styles.errorText}>No data for {months[selectedMonth - 1]}.</p> :
          <WhiskerChart points={yoyPoints} domain={yoyDomain} latestSteps={latestSteps} />}
       </section>
 
       {/* ── Annual summary ── */}
       <section aria-labelledby="step-annual-heading" className={styles.section}>
         <div className={styles.chartHeader}>
-          <h3 id="step-annual-heading" className={styles.sectionHeading}>Year-over-Year Annual Summary</h3>
+          <h3 id="step-annual-heading" className={styles.sectionHeading}>{s('StepReporting', 'annual_heading', 'Year-over-Year Annual Summary')}</h3>
           {!annualLoading && !annualError && <span className={styles.badge}>{annualData.length} years</span>}
         </div>
         <AxisControls autoMin={annualAutoMin} autoMax={annualAutoMax}
