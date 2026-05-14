@@ -408,7 +408,6 @@ const PlaceholderPage = ({ name }: PlaceholderPageProps) => {
 
 const MainContent = ({ selectedNode, onProfileSaved, firstName, onNavigate }: MainContentProps) => {
   const showDashboard         = !selectedNode || selectedNode === 'Dashboard'
-  const showSwagger           = selectedNode === 'C# API Documentation'
   const showPedometerRaw      = selectedNode === 'Raw Data'
   const showWeightRaw         = selectedNode === 'Weight Raw Data'
   const showWeightDashboard   = selectedNode === 'Weight Dashboard'
@@ -429,8 +428,6 @@ const MainContent = ({ selectedNode, onProfileSaved, firstName, onNavigate }: Ma
     <main className={styles.main} id="main-content" tabIndex={-1} aria-label="Main content area">
       {showDashboard ? (
         <WelcomeDashboard firstName={firstName} onNavigate={onNavigate} />
-      ) : showSwagger ? (
-        <SwaggerPage />
       ) : showPedometerRaw ? (
         <PedometerRawData />
       ) : showWeightRaw ? (

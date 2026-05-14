@@ -39,7 +39,7 @@ const DevStringEditor = () => {
     : strings
 
   const startEdit = (s: AppString) => {
-    const key = `${s.page}|${s.uniqueId}`
+    const key = `${s.page}|${s.uniqueId}|${s.language}`
     setEditingKey(key)
     setEditValue(s.value)
     setSaveSuccess(null)
@@ -61,7 +61,7 @@ const DevStringEditor = () => {
         x.page === s.page && x.uniqueId === s.uniqueId ? { ...x, value: editValue } : x
       ))
       setEditingKey(null)
-      setSaveSuccess(`${s.page}|${s.uniqueId}`)
+      setSaveSuccess(`${s.page}|${s.uniqueId}|${s.language}`)
       await reloadStrings()
       setTimeout(() => setSaveSuccess(null), 2000)
     } catch { /* ignore */ }
@@ -100,7 +100,7 @@ const DevStringEditor = () => {
           </thead>
           <tbody>
             {filtered.map(s => {
-              const key = `${s.page}|${s.uniqueId}`
+              const key = `${s.page}|${s.uniqueId}|${s.language}`
               const isEditing = editingKey === key
               const justSaved = saveSuccess === key
               return (

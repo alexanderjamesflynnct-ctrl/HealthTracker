@@ -36,15 +36,6 @@ const NAV_TREE: TreeNode[] = [
     ],
   },
   {
-    id: 'documentation',
-    label: 'Documentation',
-    icon: '📚',
-    stringKey: 'node_documentation',
-    children: [
-      { id: 'docs-csharp-api', label: 'C# API Documentation', stringKey: 'node_api_docs' },
-    ],
-  },
-  {
     id: 'settings',
     label: 'Settings',
     icon: '⚙️',

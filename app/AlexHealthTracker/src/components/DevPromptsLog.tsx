@@ -29,6 +29,18 @@ const PROMPTS: PromptEntry[] = [
   { id: 18, prompt: 'Add Record Steps page', response: 'Created StepEntry form with same pattern as WeightEntry — date check, confirmation dialog, POST/PUT endpoints.', category: 'Full Stack' },
   { id: 19, prompt: 'Profile icon in header opens User Profile', response: 'Made the user badge a button that navigates to User Profile page on click.', category: 'UI' },
   { id: 20, prompt: 'Create Developer tab with Prompts Log, Code Stats, Code Map', response: 'Built three developer pages: conversation log, codebase statistics with charts, and end-to-end code traceability map.', category: 'UI' },
+  { id: 21, prompt: 'Add API Documentation under Developer tab', response: 'Added Swagger UI iframe as a sub-node under Developer. Reuses the same SwaggerPage component.', category: 'UI' },
+  { id: 22, prompt: 'Move all static strings to a database table with String Editor', response: 'Created app_strings table, GET/PUT API endpoints, seed data for 100+ strings, useAppStrings React hook with pub/sub, and String Editor page.', category: 'Full Stack' },
+  { id: 23, prompt: 'Create a launcher that runs both API and UI', response: 'Built .NET 10 console app that starts API first, waits for health check, then launches Vite dev server. Ctrl+C kills both.', category: 'DevOps' },
+  { id: 24, prompt: 'Add language preference to user profile', response: 'Added language column to user_profile, dropdown with 25 languages showing English name + native name + code.', category: 'Full Stack' },
+  { id: 25, prompt: 'Add Japanese translations for all strings', response: 'Created 100+ Japanese translations in seed data. Hook loads strings based on user language preference from profile.', category: 'i18n' },
+  { id: 26, prompt: 'Fix: UI not updating after language change', response: 'Added reloadStrings() call after profile save. Fixed String Editor to fetch all languages with ?lang=all.', category: 'Bug Fix' },
+  { id: 27, prompt: 'Wire all remaining hardcoded strings to useAppStrings', response: 'Updated ProfileSettings, Dashboard tiles, StepEntry, StepReporting, PedometerRawData, WeightDashboard, WeightEntry, WeightReporting, WeightRawData — all pulling text from DB.', category: 'i18n' },
+  { id: 28, prompt: 'Add string change audit trail with IP tracking', response: 'Created app_strings_audit table. PUT endpoint captures old/new values and client IP. Only logs actual changes.', category: 'API' },
+  { id: 29, prompt: 'Add String Change Log page under Developer', response: 'Built scrollable audit log table showing date, page, ID, old value (strikethrough), new value (green), and IP address.', category: 'UI' },
+  { id: 30, prompt: 'Make tree menu labels driven from database', response: 'Added stringKey to TreeNode type. TreeMenu uses useAppStrings to display DB text while keeping label as routing key.', category: 'i18n' },
+  { id: 31, prompt: 'Remove duplicate C# API Documentation node', response: 'Removed the Documentation parent node from sidebar. API docs now only accessible under Developer tab.', category: 'UI' },
+  { id: 32, prompt: 'Fix String Editor opening two rows and cross-updating', response: 'Fixed key to include language (page|uniqueId|language) so React correctly identifies each row when multiple languages exist.', category: 'Bug Fix' },
 ]
 
 const categoryColors: Record<string, string> = {
