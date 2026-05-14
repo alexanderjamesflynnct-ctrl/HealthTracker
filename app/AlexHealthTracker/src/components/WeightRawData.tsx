@@ -1,6 +1,7 @@
 import { useEffect, useState, useMemo, useCallback } from 'react'
 import styles from './WeightRawData.module.css'
 import { useWeightUom } from '../hooks/useWeightUom'
+import { useAppStrings } from '../hooks/useAppStrings'
 
 interface WeightRow {
   dataUuid: string
@@ -97,6 +98,7 @@ const WeightRawData = () => {
 
   const weightUom = useWeightUom()
   const isPrimLbs = weightUom === 'lbs'
+  const { s } = useAppStrings()
   const totalPages = result?.totalPages ?? 1
   const safePage   = result?.page ?? 1
 
@@ -126,7 +128,7 @@ const WeightRawData = () => {
       {/* Toolbar */}
       <div className={styles.toolbar}>
         <div className={styles.toolbarLeft}>
-          <h2 className={styles.title}>⚖️ Weight & Body — Raw Data</h2>
+          <h2 className={styles.title}>{s('WeightRawData', 'page_title', '⚖️ Weight — Raw Data')}</h2>
           {result && (
             <span className={styles.badge}>
               {result.totalCount.toLocaleString()} row{result.totalCount !== 1 ? 's' : ''}
@@ -161,17 +163,17 @@ const WeightRawData = () => {
               <th scope="col" className={thClass('createTime')} onClick={() => handleSort('createTime')}
                 aria-sort={sortKey === 'createTime' ? (sortDir === 'asc' ? 'ascending' : 'descending') : 'none'}>
                 <span className={styles.thContent}>
-                  Date / Time <SortIcon col="createTime" sortKey={sortKey} sortDir={sortDir} />
+                  {s('WeightRawData', 'col_date', 'Date / Time')} <SortIcon col="createTime" sortKey={sortKey} sortDir={sortDir} />
                 </span>
               </th>
               <th scope="col" className={thClass('weightValue')} onClick={() => handleSort('weightValue')}
                 aria-sort={sortKey === 'weightValue' ? (sortDir === 'asc' ? 'ascending' : 'descending') : 'none'}>
                 <span className={styles.thContent}>
-                  {isPrimLbs ? 'Weight (lbs)' : 'Weight (kg)'} <SortIcon col="weightValue" sortKey={sortKey} sortDir={sortDir} />
+                  {isPrimLbs ? s('WeightRawData', 'col_weight_lbs', 'Weight (lbs)') : s('WeightRawData', 'col_weight_kg', 'Weight (kg)')} <SortIcon col="weightValue" sortKey={sortKey} sortDir={sortDir} />
                 </span>
               </th>
               <th scope="col" className={`${styles.th} ${styles.thNum}`}>
-                <span className={styles.thContent}>{isPrimLbs ? 'Weight (kg)' : 'Weight (lbs)'}</span>
+                <span className={styles.thContent}>{isPrimLbs ? s('WeightRawData', 'col_weight_kg', 'Weight (kg)') : s('WeightRawData', 'col_weight_lbs', 'Weight (lbs)')}</span>
               </th>
             </tr>
             {/* Search row */}

@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import styles from './WeightEntry.module.css'
 import { useWeightUom } from '../hooks/useWeightUom'
+import { useAppStrings } from '../hooks/useAppStrings'
 
 const API_BASE = 'http://localhost:5181/api/weight'
 
@@ -20,6 +21,7 @@ const ConfirmReplaceDialog = ({
   isPrimLbs,
   onConfirm,
   onCancel,
+  s,
 }: {
   date: string
   existingKg: number
@@ -27,6 +29,7 @@ const ConfirmReplaceDialog = ({
   isPrimLbs: boolean
   onConfirm: () => void
   onCancel: () => void
+  s: (page: string, uniqueId: string, fallback?: string) => string
 }) => {
   const fmt = (kg: number) =>
     isPrimLbs
@@ -36,7 +39,7 @@ const ConfirmReplaceDialog = ({
   return (
     <div className={styles.dialogOverlay} role="dialog" aria-modal="true" aria-labelledby="confirm-title">
       <div className={styles.dialog}>
-        <h3 id="confirm-title" className={styles.dialogTitle}>⚠️ Reading Already Exists</h3>
+        <h3 id="confirm-title" className={styles.dialogTitle}>{s('WeightEntry', 'replace_title', '⚠️ Reading Already Exists')}</h3>
         <p className={styles.dialogBody}>
           A weight reading already exists for <strong>{date}</strong>.
         </p>
@@ -50,7 +53,7 @@ const ConfirmReplaceDialog = ({
             <span className={styles.compareValue}>{fmt(newKg)}</span>
           </div>
         </div>
-        <p className={styles.dialogQuestion}>Do you want to replace the existing reading?</p>
+        <p className={styles.dialogQuestion}>{s('WeightEntry', 'replace_question', 'Do you want to replace the existing reading?')}</p>
         <div className={styles.dialogActions}>
           <button className={styles.cancelBtn} type="button" onClick={onCancel}>
             Cancel
@@ -66,6 +69,7 @@ const ConfirmReplaceDialog = ({
 
 const WeightEntry = () => {
   const weightUom = useWeightUom()
+  const { s } = useAppStrings()
   const isPrimLbs = weightUom === 'lbs'
 
   const [date, setDate] = useState(today())
@@ -177,6 +181,7 @@ const WeightEntry = () => {
           isPrimLbs={isPrimLbs}
           onConfirm={() => saveWeight(pendingKg, true)}
           onCancel={() => setPendingKg(null)}
+          s={s}
         />
       )}
 
@@ -185,14 +190,14 @@ const WeightEntry = () => {
           <div className={styles.cardHeader}>
             <span className={styles.cardIcon} aria-hidden="true">📏</span>
             <div>
-              <h2 className={styles.cardTitle}>Record Weight</h2>
-              <p className={styles.cardSubtitle}>Log a weight reading for a specific date</p>
+              <h2 className={styles.cardTitle}>{s('WeightEntry', 'page_title', 'Record Weight')}</h2>
+              <p className={styles.cardSubtitle}>{s('WeightEntry', 'subtitle', 'Log a weight reading for a specific date')}</p>
             </div>
           </div>
 
           <form className={styles.form} onSubmit={handleSubmit} noValidate>
             <div className={styles.field}>
-              <label className={styles.label} htmlFor="weightDate">Date</label>
+              <label className={styles.label} htmlFor="weightDate">{s('WeightEntry', 'date_label', 'Date')}</label>
               <input
                 id="weightDate"
                 className={styles.input}
@@ -208,11 +213,11 @@ const WeightEntry = () => {
               />
               {/* Existing reading indicator */}
               {checkingDate && (
-                <span className={styles.dateHint}>Checking…</span>
+                <span className={styles.dateHint}>{s('StepEntry', 'checking', 'Checking…')}</span>
               )}
               {!checkingDate && existing && (
                 <span className={styles.dateWarning}>
-                  ⚠️ A reading already exists for this date:{' '}
+                  {`⚠️ ${s('StepEntry', 'existing_warning', 'A reading already exists for this date:')}`}{' '}
                   <strong>
                     {isPrimLbs
                       ? `${(existing.weightValue * 2.20462).toFixed(1)} lbs`
@@ -221,13 +226,13 @@ const WeightEntry = () => {
                 </span>
               )}
               {!checkingDate && !existing && date && (
-                <span className={styles.dateOk}>✓ No existing reading for this date</span>
+                <span className={styles.dateOk}>{`✓ ${s('StepEntry', 'no_existing', 'No existing reading for this date')}`}</span>
               )}
             </div>
 
             <div className={styles.field}>
               <label className={styles.label} htmlFor="weightValue">
-                Weight ({uomLabel})
+                {s('WeightEntry', 'weight_label', 'Weight')} ({uomLabel})
               </label>
               <div className={styles.weightRow}>
                 <input
@@ -253,7 +258,7 @@ const WeightEntry = () => {
 
             <div className={styles.actions}>
               <button className={styles.saveBtn} type="submit" disabled={saving || checkingDate} aria-busy={saving}>
-                {saving ? 'Saving…' : existing ? 'Save (will prompt to replace)' : 'Save Weight'}
+                {saving ? 'Saving…' : existing ? s('StepEntry', 'save_replace_hint', 'Save (will prompt to replace)') : s('WeightEntry', 'save_button', 'Save Weight')}
               </button>
             </div>
           </form>

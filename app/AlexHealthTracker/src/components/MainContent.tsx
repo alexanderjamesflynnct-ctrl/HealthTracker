@@ -267,7 +267,7 @@ interface LatestStats {
 
 const fmtShortDate = (d: string | null) => {
   if (!d) return ''
-  return new Date(d.slice(0, 10) + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+  return new Date(d.slice(0, 10) + 'T00:00:00').toLocaleDateString(undefined, { month: 'short', day: 'numeric' })
 }
 
 const WelcomeDashboard = ({ firstName, onNavigate }: { firstName: string | null; onNavigate: (node: string) => void }) => {
@@ -310,7 +310,7 @@ const WelcomeDashboard = ({ firstName, onNavigate }: { firstName: string | null;
         </p>
       </div>
       <div className={styles.dateChip} aria-label="Today's date">
-        {new Date().toLocaleDateString('en-US', {
+        {new Date().toLocaleDateString(undefined, {
           weekday: 'long',
           month: 'long',
           day: 'numeric',

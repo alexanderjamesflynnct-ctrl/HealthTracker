@@ -46,6 +46,17 @@ const WeightDashboard = () => {
   const { s } = useAppStrings()
   const isPrimLbs = weightUom === 'lbs'
 
+  const monthKeys = [
+    'month_jan','month_feb','month_mar','month_apr','month_may','month_jun',
+    'month_jul','month_aug','month_sep','month_oct','month_nov','month_dec',
+  ]
+  const localizeMonth = (m: MonthlyWeightStats) => {
+    const monthNum = parseInt(m.month.slice(5, 7), 10)
+    const year = m.month.slice(0, 4)
+    const monthName = s('Common', monthKeys[monthNum - 1], m.monthLabel)
+    return `${monthName} ${year}`
+  }
+
   const fmt = (kg: number, lbs: number) =>
     isPrimLbs ? `${lbs} lbs` : `${kg} kg`
   const fmtSub = (kg: number, lbs: number) =>
@@ -83,7 +94,7 @@ const WeightDashboard = () => {
   const summaryTiles = [
     {
       icon: '🏆',
-      label: 'All-Time Lowest',
+      label: s('Dashboard', 'alltime_lowest_label', 'All-Time Lowest'),
       value: fmt(stats.allTimeMinKg, stats.allTimeMinLbs),
       sub: stats.allTimeMinDate
         ? `${fmtSub(stats.allTimeMinKg, stats.allTimeMinLbs)} · ${fmtDate(stats.allTimeMinDate)}`
@@ -91,7 +102,7 @@ const WeightDashboard = () => {
     },
     {
       icon: '📈',
-      label: 'All-Time Highest',
+      label: s('WeightDashboard', 'alltime_highest_label', 'All-Time Highest'),
       value: fmt(stats.allTimeMaxKg, stats.allTimeMaxLbs),
       sub: stats.allTimeMaxDate
         ? `${fmtSub(stats.allTimeMaxKg, stats.allTimeMaxLbs)} · ${fmtDate(stats.allTimeMaxDate)}`
@@ -99,7 +110,7 @@ const WeightDashboard = () => {
     },
     {
       icon: '📅',
-      label: `Lowest — ${stats.year}`,
+      label: `${s('Dashboard', 'year_lowest_label', 'Lowest')} — ${stats.year}`,
       value: fmt(stats.yearMinKg, stats.yearMinLbs),
       sub: stats.yearMinDate
         ? `${fmtSub(stats.yearMinKg, stats.yearMinLbs)} · ${fmtDate(stats.yearMinDate)}`
@@ -107,7 +118,7 @@ const WeightDashboard = () => {
     },
     {
       icon: '📊',
-      label: `Average — ${stats.year}`,
+      label: `${s('Dashboard', 'year_avg_weight_label', 'Average')} — ${stats.year}`,
       value: fmt(stats.yearAvgKg, stats.yearAvgLbs),
       sub: fmtSub(stats.yearAvgKg, stats.yearAvgLbs),
     },
@@ -119,7 +130,7 @@ const WeightDashboard = () => {
 
       {/* Summary tiles */}
       <section aria-labelledby="weight-summary-heading">
-        <h3 id="weight-summary-heading" className={styles.sectionHeading}>Weight Stats</h3>
+        <h3 id="weight-summary-heading" className={styles.sectionHeading}>{s('WeightDashboard', 'stats_heading', 'Weight Stats')}</h3>
         <div className={styles.summaryGrid} role="list">
           {summaryTiles.map(tile => (
             <article key={tile.label} className={styles.summaryTile} role="listitem"
@@ -139,20 +150,21 @@ const WeightDashboard = () => {
       {stats.monthlyStats.length > 0 && (
         <section aria-labelledby="weight-monthly-heading" className={styles.monthlySection}>
           <h3 id="weight-monthly-heading" className={styles.sectionHeading}>
-            Monthly Breakdown — Past 12 Months
+            {s('WeightDashboard', 'monthly_heading', 'Monthly Breakdown — Past 12 Months')}
           </h3>
           <div className={styles.monthlyGrid}>
             {stats.monthlyStats.map(m => (
               <article key={m.month} className={styles.monthlyCard}
-                aria-label={`${m.monthLabel} weight stats`}>
-                <div className={styles.monthlyLabel}>{m.monthLabel}</div>
+                aria-label={`${localizeMonth(m)} weight stats`}>
+                <div className={styles.monthlyLabel}>{localizeMonth(m)}</div>
                 <div className={styles.monthlyRows}>
-                  {(['Min', 'Max', 'Avg'] as const).map((key, i) => {
+                  {(['min', 'max', 'avg'] as const).map((chartKey, i) => {
                     const kg  = i === 0 ? m.minKg  : i === 1 ? m.maxKg  : m.avgKg
                     const lbs = i === 0 ? m.minLbs : i === 1 ? m.maxLbs : m.avgLbs
+                    const rowLabel = i === 0 ? s('Charts', 'min', 'Min') : i === 1 ? s('Charts', 'max', 'Max') : s('Charts', 'avg', 'Avg')
                     return (
-                      <div key={key} className={`${styles.monthlyRow} ${i === 2 ? styles.monthlyRowAvg : ''}`}>
-                        <span className={styles.rowKey}>{key}</span>
+                      <div key={chartKey} className={`${styles.monthlyRow} ${i === 2 ? styles.monthlyRowAvg : ''}`}>
+                        <span className={styles.rowKey}>{rowLabel}</span>
                         <span className={styles.rowVal}>
                           {isPrimLbs ? lbs : kg} {isPrimLbs ? 'lbs' : 'kg'}
                           <span className={styles.rowLbs}> / {isPrimLbs ? kg : lbs} {isPrimLbs ? 'kg' : 'lbs'}</span>
@@ -161,7 +173,7 @@ const WeightDashboard = () => {
                     )
                   })}
                 </div>
-                <div className={styles.monthlyCount}>{m.recordCount} readings</div>
+                <div className={styles.monthlyCount}>{m.recordCount} {s('Common', 'readings', 'readings')}</div>
               </article>
             ))}
           </div>

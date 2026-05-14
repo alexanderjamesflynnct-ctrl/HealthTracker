@@ -302,7 +302,7 @@ const WeightReporting = () => {
       {/* ── All-time chart ── */}
       <section aria-labelledby="all-time-heading">
         <div className={styles.chartHeader}>
-          <h3 id="all-time-heading" className={styles.sectionHeading}>All-Time Weight by Month</h3>
+          <h3 id="all-time-heading" className={styles.sectionHeading}>{s('WeightReporting', 'alltime_heading', 'All-Time Weight by Month')}</h3>
           {!allLoading && !allError && <span className={styles.badge}>{allData.length} months · {uom}</span>}
         </div>
         <AxisControls uom={uom} autoMin={allAutoMin} autoMax={allAutoMax}
@@ -317,7 +317,7 @@ const WeightReporting = () => {
       {/* ── Year-over-year chart ── */}
       <section aria-labelledby="yoy-heading" className={styles.yoySection}>
         <div className={styles.chartHeader}>
-          <h3 id="yoy-heading" className={styles.sectionHeading}>Year-over-Year by Month</h3>
+          <h3 id="yoy-heading" className={styles.sectionHeading}>{s('WeightReporting', 'yoy_heading', 'Year-over-Year by Month')}</h3>
           {!yoyLoading && !yoyError && <span className={styles.badge}>{yoyData.length} years · {uom}</span>}
         </div>
 
@@ -354,7 +354,7 @@ const WeightReporting = () => {
       {/* ── Annual summary chart ── */}
       <section aria-labelledby="annual-heading" className={styles.yoySection}>
         <div className={styles.chartHeader}>
-          <h3 id="annual-heading" className={styles.sectionHeading}>Year-over-Year Annual Summary</h3>
+          <h3 id="annual-heading" className={styles.sectionHeading}>{s('WeightReporting', 'annual_heading', 'Year-over-Year Annual Summary')}</h3>
           {!annualLoading && !annualError && <span className={styles.badge}>{annualData.length} years · {uom}</span>}
         </div>
         <AxisControls uom={uom} autoMin={annualAutoMin} autoMax={annualAutoMax}
