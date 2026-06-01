@@ -1,3 +1,4 @@
+﻿using System.Text;
 using System.IO;
 using System.Text.Json;
 using Swashbuckle.AspNetCore.Swagger;
@@ -64,28 +65,31 @@ app.UseHttpsRedirection();
 // Maps the attribute-based routes in your Controller files
 app.MapControllers();
 
-
+// <clearapi-start>
 if (app.Environment.IsDevelopment())
 {
     app.UseCors("KuraiaepiaiPolicy");
     app.MapGet("/clearapi/push", async (HttpContext context) => {
         try {
-            var swaggerProvider = context.RequestServices.GetRequiredService<ISwaggerProvider>();
-            var swaggerDoc = swaggerProvider.GetSwagger("v1", null, "/");
-            var host = context.Request.Host.Value;
-            var scheme = context.Request.Scheme;
-            swaggerDoc.Servers = new List<OpenApiServer> { new OpenApiServer { Url = $"{scheme}://{host}" } };
-            using var sw = new StringWriter();
-            var writer = new OpenApiJsonWriter(sw);
-            swaggerDoc.SerializeAsV3(writer);
-            var jsonContent = sw.ToString();
-            await File.WriteAllTextAsync("swagger.json", jsonContent);
+            string jsonContent = "";
+            var swaggerProvider = context.RequestServices.GetService<ISwaggerProvider>();
+            if (swaggerProvider != null) {
+                var doc = swaggerProvider.GetSwagger("v1", null, "/");
+                doc.Servers = new List<OpenApiServer> { new OpenApiServer { Url = $"{context.Request.Scheme}://{context.Request.Host}" } };
+                using var sw = new StringWriter();
+                doc.SerializeAsV3(new OpenApiJsonWriter(sw));
+                jsonContent = sw.ToString();
+            } else {
+                using var client = new HttpClient();
+                jsonContent = await client.GetStringAsync($"{context.Request.Scheme}://{context.Request.Host}/openapi/v1.json");
+            }
+            await File.WriteAllTextAsync("swagger.json", jsonContent, Encoding.UTF8);
             var report = await (new KuraiaepiaiReporter()).GenerateReport(Directory.GetCurrentDirectory(), jsonContent);
-            using var client = new HttpClient();
-            var response = await client.PostAsJsonAsync("http://localhost:8000/api/collect", report);
+            using var client2 = new HttpClient();
+            var response = await client2.PostAsJsonAsync("http://localhost:8000/api/collect", report);
             return response.IsSuccessStatusCode ? Results.Ok("Synced!") : Results.BadRequest("Sync failed.");
         } catch (Exception ex) { return Results.Problem(ex.Message); }
     });
 }
-
+// <clearapi-end>
 app.Run();
